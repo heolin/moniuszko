@@ -1,78 +1,69 @@
 # Moniuszko
 
 Biblioteka grafik SVG z metadanymi i edytor kompozycji, czyli pojedynczych plików SVG
-złożonych z grafik z biblioteki, tekstów i prostych kształtów. Agent AI ma dostęp do
-biblioteki i kompozycji przez MCP. Plan i decyzje projektowe są w [docs/PLAN.md](docs/PLAN.md),
-a makiety w [docs/mockups/](docs/mockups/index.html).
+złożonych z grafik z biblioteki, tekstów i prostych kształtów. Agent AI (np. Claude Code)
+przegląda i opisuje bibliotekę oraz składa kompozycje przez MCP. Człowiek poprawia je w
+edytorze.
 
-## Wymagania
+![Edytor kompozycji](docs/images/editor.png)
 
-Node 22 i npm 10.
+## Dokumentacja
 
-## Uruchomienie
+| Dokument | Zawartość |
+|---|---|
+| [docs/LIBRARY.md](docs/LIBRARY.md) | dodawanie grafik, metadane, wyszukiwanie |
+| [docs/EDITOR.md](docs/EDITOR.md) | praca w edytorze, skróty klawiszowe, eksport |
+| [docs/MCP.md](docs/MCP.md) | podłączenie agenta, narzędzia, przykładowe polecenia |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | uruchomienie do rozwoju, architektura, testy, migracje |
+| [docs/PLAN.md](docs/PLAN.md) | plan i decyzje projektowe |
+| [docs/mockups/](docs/mockups/index.html) | pierwotne makiety ekranów |
+| [TODO.md](TODO.md) | rzeczy odłożone |
+
+## Szybki start
+
+Wymagania: Node 22 i npm 10.
 
 ```bash
 npm install
-cp moniuszko.config.example.json moniuszko.config.json   # opcjonalnie; bez pliku zostanie utworzony
-npm run dev
-```
-
-`npm run dev` uruchamia trzy procesy: kompilację pakietu `shared` w trybie watch, serwer
-(port 4400) i serwer deweloperski Vite (port 5173, przekazuje `/api` i `/mcp` do serwera).
-Aplikacja jest pod <http://localhost:5173>.
-
-Wersja produkcyjna:
-
-```bash
 npm run build
-npm start          # serwer pod http://localhost:4400 podaje też zbudowanego klienta
+npm start
 ```
 
-## Konfiguracja
+Aplikacja jest pod <http://localhost:4400>. Przy pierwszym uruchomieniu powstaje plik
+`moniuszko.config.json` i folder `workspace/` z bazą, grafikami i kompozycjami. Folder i port
+zmienia się w tym pliku albo na ekranie Ustawienia.
 
-`moniuszko.config.json` (ścieżki względne liczą się od folderu tego pliku):
-
-| Pole | Domyślnie | Opis |
-|---|---|---|
-| `workspace` | `./workspace` | baza `moniuszko.db`, miniatury, domyślne podfoldery |
-| `libraryDir` | `<workspace>/library` | pliki grafik i `originals/` |
-| `compositionsDir` | `<workspace>/compositions` | pliki kompozycji (`<id>.svg`) |
-| `exportsDir` | `<workspace>/exports` | domyślny folder eksportu |
-| `port` | `4400` | port serwera |
-| `normalizeSvg` | `true` | normalizacja svgo przy imporcie |
-| `warnDuplicates` | `true` | wykrywanie duplikatów przy imporcie |
-
-Foldery można też zmienić w aplikacji na ekranie Ustawienia.
-
-## MCP
-
-Serwer MCP działa pod `/mcp` (Streamable HTTP, bez sesji). Dla Claude Code:
+Podłączenie Claude Code do serwera MCP:
 
 ```bash
 claude mcp add --transport http moniuszko http://localhost:4400/mcp
 ```
 
-Narzędzia: `search_graphics`, `get_graphic`, `add_graphic`, `update_graphic_metadata`,
-`list_untagged`, `get_library_overview`, `list_compositions`, `get_composition`,
-`create_composition`, `apply_scene_ops`. Opis operacji sceny jest w opisie narzędzia
-`apply_scene_ops` i w `shared/src/scene/ops.ts`.
+## Ekrany
 
-## Testy
+**Biblioteka.** Grafiki dodaje się przez upuszczenie plików SVG na ekran albo przyciskiem
+„Dodaj pliki…”. Panel po prawej pokazuje i zmienia metadane zaznaczonej grafiki. Filtry po
+lewej zawężają listę według statusu metadanych, kategorii i tagów.
 
-```bash
-npm run typecheck
-npm test            # vitest: shared, server, client
-npm run test:e2e    # build, potem Playwright (Chrome z systemu, channel: 'chrome')
-```
+![Biblioteka](docs/images/library.png)
 
-Testy e2e uruchamiają aplikację w procesie testu na losowym porcie 127.0.0.1 i świeżym
-workspace w katalogu tymczasowym; po każdym teście serwer jest zamykany. Zmienna
-`SHOTS_DIR` zapisuje zrzuty ekranów z kolejnych kroków.
+**Import.** Każdy plik jest oczyszczany ze skryptów i odwołań zewnętrznych. Okno importu
+pokazuje, co usunięto, które pliki są duplikatami i które zostały odrzucone.
 
-## Układ repozytorium
+![Import](docs/images/library-import.png)
 
-- `shared/` — model sceny, komendy, zapis i odczyt pliku kompozycji, operacje sceny MCP, kształty.
-- `server/` — Express, SQLite + Drizzle (migracje w `server/drizzle/`), import grafik, kompozycje, eksport, MCP, SSE.
-- `client/` — React + Mantine: biblioteka, kompozycje, edytor (Moveable + Selecto), ustawienia.
-- `e2e/` — testy Playwright.
-- `samples/` — przykładowe grafiki do testów i ręcznego sprawdzania.
+**Kompozycje.** Lista kompozycji z miniaturami. Szkice utworzone przez agenta są oznaczone
+i mają osobny filtr.
+
+![Kompozycje](docs/images/compositions.png)
+
+**Edytor.** Warstwy i panel biblioteki po lewej, płótno pośrodku, inspektor po prawej. Gdy
+agent zmieni otwartą kompozycję, edytor wczytuje zmianę, pokazuje, co się zmieniło, i
+pozwala ją cofnąć.
+
+![Zmiana od agenta](docs/images/editor-agent-change.png)
+
+**Podgląd dla agenta.** Narzędzia MCP zwracają render PNG kompozycji, żeby agent mógł
+sprawdzić swój układ.
+
+<img src="docs/images/mcp-preview.png" alt="Render kompozycji zwracany agentowi" width="600">

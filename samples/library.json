@@ -1,0 +1,21 @@
+{
+  "description": "Metadane przykładowych grafik z samples/, w postaci, jaką nada agent przez update_graphic_metadata. Grafiki z wartością null zostają bez metadanych.",
+  "graphics": {
+    "drzewo.svg": { "title": "Drzewo liściaste", "description": "Drzewo z okrągłą, gęstą koroną w odcieniach zieleni i brązowym pniem. Styl płaski.", "category": "Rośliny", "tags": ["drzewo", "lato", "park"], "tagStatus": "ai" },
+    "swierk.svg": { "title": "Świerk", "description": "Iglaste drzewo z trzech zielonych pięter i krótkiego pnia.", "category": "Rośliny", "tags": ["drzewo", "las", "zima"], "tagStatus": "ai" },
+    "krzew.svg": { "title": "Krzew z kwiatami", "description": "Niski, szeroki krzew z kilkoma różowymi kwiatkami.", "category": "Rośliny", "tags": ["krzew", "ogród", "lato"], "tagStatus": "ai" },
+    "dom.svg": { "title": "Dom wiejski", "description": "Parterowy dom z czerwonym dachem, drzwiami i dwoma oknami.", "category": "Budynki", "tags": ["dom", "wieś"], "tagStatus": "reviewed" },
+    "wiatrak.svg": { "title": "Wiatrak", "description": "Drewniany wiatrak z czterema jasnymi skrzydłami.", "category": "Budynki", "tags": ["wieś", "młyn"], "tagStatus": "ai" },
+    "plot.svg": { "title": "Płot drewniany", "description": "Odcinek drewnianego płotu z czterech sztachet.", "category": "Budynki", "tags": ["wieś", "drewno"], "tagStatus": "ai" },
+    "latarnia.svg": { "title": "Latarnia uliczna", "description": "Czarna latarnia z żółtym kloszem.", "category": "Budynki", "tags": ["miasto", "noc"], "tagStatus": "ai" },
+    "slonce.svg": { "title": "Słońce", "description": "Żółte słońce z ośmioma promieniami.", "category": "Krajobraz", "tags": ["niebo", "lato"], "tagStatus": "reviewed" },
+    "ksiezyc.svg": { "title": "Księżyc", "description": "Jasnożółty sierp księżyca.", "category": "Krajobraz", "tags": ["niebo", "noc"], "tagStatus": "ai" },
+    "chmura.svg": { "title": "Chmura", "description": "Biała chmura z delikatnym gradientem.", "category": "Krajobraz", "tags": ["niebo"], "tagStatus": "ai" },
+    "gora.svg": { "title": "Góra ze śniegiem", "description": "Dwa szare szczyty, wyższy z białą czapą śniegu.", "category": "Krajobraz", "tags": ["góry"], "tagStatus": "ai" },
+    "zaglowka.svg": { "title": "Żaglówka", "description": "Mała łódź z białym żaglem i niebieskim kadłubem.", "category": "Pojazdy", "tags": ["woda", "lato"], "tagStatus": "reviewed" },
+    "postac.svg": { "title": "Postać stojąca", "description": "Stojąca postać w niebieskiej koszuli.", "category": "Postacie", "tags": ["człowiek"], "tagStatus": "ai" },
+    "kot.svg": { "title": "Kot", "description": "Rudy kot siedzący bokiem, z podniesionym ogonem.", "category": "Zwierzęta", "tags": ["kot", "zwierzę domowe"], "tagStatus": "ai" },
+    "ptak.svg": null,
+    "kwiat.svg": null
+  }
+}
