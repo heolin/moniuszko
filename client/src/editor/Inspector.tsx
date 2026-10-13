@@ -36,9 +36,12 @@ import {
   setRotation,
   setTransform,
   updateNode,
+  updateShape,
   updateText,
   type AssetNode,
   type SceneNode,
+  type ShapeNode,
+  type ShapePatch,
   type TextNode,
 } from '@moniuszko/shared';
 import { api } from '../api/client';
@@ -228,6 +231,48 @@ function TextSection({ node }: { node: TextNode }) {
   );
 }
 
+function ShapeSection({ node }: { node: ShapeNode }) {
+  const apply = (patch: ShapePatch) =>
+    guarded(() => useEditor.getState().apply((sc) => updateShape(sc, node.id, patch)), 'Nie udało się zmienić kształtu');
+  const isLine = node.shape === 'line';
+  return (
+    <Section title="Kształt">
+      {!isLine && (
+        <>
+          <Checkbox size="xs" label="Wypełnienie" checked={node.fill !== null} onChange={(e) => apply({ fill: e.currentTarget.checked ? '#b5452b' : null })} />
+          {node.fill !== null && <ColorInput size="xs" mt={4} value={node.fill} onChangeEnd={(v) => apply({ fill: v })} />}
+          <Checkbox
+            size="xs"
+            mt="sm"
+            label="Obrys"
+            checked={node.stroke !== null}
+            onChange={(e) => apply({ stroke: e.currentTarget.checked ? '#1f1e1b' : null })}
+          />
+        </>
+      )}
+      {node.stroke !== null && (
+        <Group grow gap={8} mt={4} align="flex-end">
+          <ColorInput size="xs" label={isLine ? 'Kolor linii' : undefined} value={node.stroke} onChangeEnd={(v) => apply({ stroke: v })} />
+          <Num label="Grubość" value={node.strokeWidth} min={0} onCommit={(v) => apply({ strokeWidth: v })} />
+        </Group>
+      )}
+      {node.shape === 'rect' && (
+        <Group grow gap={8} mt={6}>
+          <Num label="Zaokrąglenie narożników" value={node.cornerRadius} min={0} onCommit={(v) => apply({ cornerRadius: v })} />
+        </Group>
+      )}
+      {(node.shape === 'polygon' || node.shape === 'star') && (
+        <Group grow gap={8} mt={6}>
+          <Num label={node.shape === 'star' ? 'Ramiona' : 'Boki'} value={node.sides} min={3} onCommit={(v) => apply({ sides: Math.round(v) })} />
+          {node.shape === 'star' && (
+            <Num label="Wcięcie" value={node.innerRatio} min={0.05} step={0.05} onCommit={(v) => apply({ innerRatio: v })} />
+          )}
+        </Group>
+      )}
+    </Section>
+  );
+}
+
 function NodeInspector({ node }: { node: SceneNode }) {
   const keepAspect = useEditor((s) => s.keepAspect);
   const lb = localBounds(node, ctx.measurer);
@@ -236,7 +281,7 @@ function NodeInspector({ node }: { node: SceneNode }) {
   const h = lb ? lb.height * Math.abs(t.scaleY) : 0;
   const apply = (fn: Parameters<ReturnType<typeof useEditor.getState>['apply']>[0], what: string) =>
     guarded(() => useEditor.getState().apply(fn), what);
-  const kind = { asset: 'grafika z biblioteki', text: 'tekst', group: 'grupa' }[node.type];
+  const kind = { asset: 'grafika z biblioteki', text: 'tekst', group: 'grupa', shape: 'kształt' }[node.type];
   return (
     <>
       <Section title="Zaznaczenie">
@@ -288,6 +333,7 @@ function NodeInspector({ node }: { node: SceneNode }) {
       </Section>
       {node.type === 'asset' && <AssetSection node={node} />}
       {node.type === 'text' && <TextSection node={node} />}
+      {node.type === 'shape' && <ShapeSection node={node} />}
       <Section title="Wyrównanie do płótna">
         <AlignButtons />
       </Section>

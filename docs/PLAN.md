@@ -111,15 +111,25 @@ Eksport ma dwa tryby:
    albo `<image href="…">` wskazujące na plik biblioteki. Zmiana grafiki w bibliotece
    jest widoczna w wyeksportowanym pliku. Plik wymaga dostępu do folderu biblioteki.
 
-Wybór między `<use>` a `<image>` w trybie z referencjami zapadnie przy implementacji:
-`<use>` do zewnętrznego pliku nie działa w części przeglądarek przy otwieraniu z
-`file://`, a `<image>` nie pozwala stylować zawartości.
+W trybie z referencjami instancja to `<image href>` ze ścieżką względną od folderu
+eksportu. `<use>` do zewnętrznego pliku nie działa w części przeglądarek przy otwieraniu
+z `file://`. W obu trybach ukryte warstwy i obiekty są pomijane. Pobieranie z przeglądarki
+obsługuje tylko plik samodzielny, bo ścieżki względne zależą od miejsca zapisu.
+
+### Kształty
+
+Poza grafikami z biblioteki i tekstami kompozycja może zawierać prymitywy: prostokąt
+(i kwadrat), elipsę (i koło), wielokąt foremny (np. trójkąt), gwiazdę i linię. Węzeł
+`shape` ma wymiary, wypełnienie, obrys, zaokrąglenie narożników, liczbę boków lub ramion
+i wcięcie gwiazdy. W pliku jest to `<g data-mz-shape="…">` z parametrami w atrybutach
+`data-mz-*` i elementem SVG wyrenderowanym z nich (`shared/src/scene/shapes.ts`).
+Agent dodaje kształty operacją `add_shape`.
 
 ## 5. Edytor
 
 Edytor powtarza architekturę revealeditor w uproszczonej postaci:
 
-- **Model sceny** — drzewo: kompozycja → warstwy → węzły (`asset`, `group`, `text`).
+- **Model sceny** — drzewo: kompozycja → warstwy → węzły (`asset`, `group`, `text`, `shape`).
   Każdy węzeł ma `transform` (x, y, obrót, skala), `opacity`, `locked`, `hidden`.
 - **Command layer** — każda zmiana sceny przechodzi przez nazwane komendy
   (`moveNodes`, `rotateNodes`, `groupNodes`, `insertAsset`, `setText`, `reorder`…).

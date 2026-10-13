@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Menu, Text, Tooltip } from '@mantine/core';
 import {
   IconArrowBackUp,
   IconArrowForwardUp,
@@ -16,12 +16,14 @@ import {
   IconLayoutAlignRight,
   IconLayoutDistributeHorizontal,
   IconPointer,
+  IconShape,
   IconTypography,
 } from '@tabler/icons-react';
 import { useNavigate } from 'react-router';
 import { useStore } from 'zustand';
 import { notifyError } from '../notify';
 import { action } from './actions';
+import { insertShape, SHAPE_PRESETS } from './insert';
 import { useEditor, type SaveState } from './store';
 
 const SAVE_LABEL: Record<SaveState, string> = {
@@ -88,6 +90,31 @@ export function Toolbar({ onSave, onExport }: { onSave: () => void; onExport: ()
       <Btn id="tool-select" icon={<IconPointer size={18} />} active={tool === 'select'} />
       <Btn id="tool-text" icon={<IconTypography size={18} />} active={tool === 'text'} />
       <Btn id="tool-pan" icon={<IconHandStop size={18} />} active={tool === 'pan'} />
+      <Menu position="bottom-start" withinPortal>
+        <Menu.Target>
+          <Tooltip label="Kształty">
+            <ActionIcon variant="subtle" color="dark" size="lg" aria-label="Kształty">
+              <IconShape size={18} />
+            </ActionIcon>
+          </Tooltip>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {SHAPE_PRESETS.map((p) => (
+            <Menu.Item
+              key={p.preset}
+              onClick={() => {
+                try {
+                  insertShape(p.preset);
+                } catch (e) {
+                  notifyError(e, 'Nie udało się wstawić kształtu');
+                }
+              }}
+            >
+              {p.label}
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
+      </Menu>
       {sep}
       <Btn id="group" icon={<IconBoxMultiple size={18} />} />
       <Btn id="ungroup" icon={<IconBoxOff size={18} />} />

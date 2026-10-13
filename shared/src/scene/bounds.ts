@@ -34,6 +34,7 @@ export const estimateTextMeasurer: TextMeasurer = {
 export function localBounds(node: SceneNode, measurer: TextMeasurer): Rect | null {
   switch (node.type) {
     case 'asset':
+    case 'shape':
       return { x: 0, y: 0, width: node.width, height: node.height };
     case 'text':
       return measurer.measure(node);

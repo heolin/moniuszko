@@ -1,5 +1,6 @@
 import { escapeAttr, escapeText, fmt } from '../svg/xml.js';
-import type { AssetNode, CompositionMeta, GroupNode, Layer, Scene, SceneNode, TextNode, Transform } from './types.js';
+import { shapeElement } from './shapes.js';
+import type { AssetNode, CompositionMeta, GroupNode, Layer, Scene, SceneNode, ShapeNode, TextNode, Transform } from './types.js';
 
 export const FORMAT_VERSION = 1;
 
@@ -68,6 +69,8 @@ function serializeNode(node: SceneNode, out: string[], indent: string): void {
       return serializeText(node, out, indent);
     case 'group':
       return serializeGroup(node, out, indent);
+    case 'shape':
+      return serializeShape(node, out, indent);
     default: {
       const never: never = node;
       throw new Error(`Nieznany typ węzła: ${JSON.stringify(never)}`);
@@ -102,6 +105,22 @@ function serializeText(node: TextNode, out: string[], indent: string): void {
   // renderowane jako spacje i przesuwałyby tekst wyśrodkowany.
   const spans = lines.map((line, i) => `<tspan x="0" y="${fmt(baselines[i]!)}">${escapeText(line)}</tspan>`);
   out.push(`${indent}<text ${attrs}>${spans.join('')}</text>`);
+}
+
+/**
+ * Kształt: parametry w atrybutach data-mz-* są źródłem, a element wewnątrz jest z nich
+ * wyrenderowany (shapeElement) i przy odczycie generowany od nowa.
+ */
+function serializeShape(node: ShapeNode, out: string[], indent: string): void {
+  let attrs = `${commonAttrs(node)} data-mz-shape="${node.shape}" data-mz-width="${fmt(node.width)}" data-mz-height="${fmt(node.height)}"`;
+  attrs += ` data-mz-fill="${node.fill === null ? 'none' : escapeAttr(node.fill)}"`;
+  attrs += ` data-mz-stroke="${node.stroke === null ? 'none' : escapeAttr(node.stroke)}" data-mz-stroke-width="${fmt(node.strokeWidth)}"`;
+  if (node.shape === 'rect') attrs += ` data-mz-radius="${fmt(node.cornerRadius)}"`;
+  if (node.shape === 'polygon' || node.shape === 'star') attrs += ` data-mz-sides="${node.sides}"`;
+  if (node.shape === 'star') attrs += ` data-mz-inner-ratio="${fmt(node.innerRatio)}"`;
+  out.push(`${indent}<g ${attrs}>`);
+  out.push(`${indent}  ${shapeElement(node)}`);
+  out.push(`${indent}</g>`);
 }
 
 function serializeGroup(node: GroupNode, out: string[], indent: string): void {

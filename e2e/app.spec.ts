@@ -191,6 +191,27 @@ test('edytor: wstawianie, przesuwanie, obrót, skalowanie, grupowanie, tekst, co
   await shot(page, '05-editor-text');
 });
 
+test('edytor: kształty z menu i ich parametry', async ({ page }) => {
+  const c = h.ctx.compositions.create({ name: 'Kształty', width: 1000, height: 600, author: 'human' });
+  await page.goto(`${h.origin}/compositions/${c.id}`);
+  for (const label of ['Koło', 'Gwiazda', 'Prostokąt']) {
+    await page.getByRole('button', { name: 'Kształty' }).click();
+    await page.getByRole('menuitem', { name: label }).click();
+  }
+  await expect(page.locator('[data-node-id]')).toHaveCount(3);
+  // Zaznaczony jest ostatni wstawiony (prostokąt): wyłączenie wypełnienia, zaokrąglenie.
+  await page.getByLabel('Wypełnienie').uncheck();
+  await page.getByLabel('Obrys').check();
+  await page.getByLabel('Zaokrąglenie narożników').fill('12');
+  await page.getByLabel('Zaokrąglenie narożników').press('Enter');
+  await waitSaved(page);
+  await shot(page, '08-editor-shapes');
+  const nodes = sceneOnDisk(c.id).layers.flatMap((l) => l.children);
+  expect(nodes.map((n) => n.type === 'shape' && n.shape)).toEqual(['ellipse', 'star', 'rect']);
+  expect(nodes[2]).toMatchObject({ fill: null, stroke: '#1f1e1b', cornerRadius: 12 });
+  expect(nodes[0]).toMatchObject({ width: 120, height: 120 });
+});
+
 test('edytor: wejście do grupy dwuklikiem i zmiana z zewnątrz (agent)', async ({ page }) => {
   const [tree] = importSamples(['drzewo.svg']);
   const c = h.ctx.compositions.create({ name: 'Agent', width: 1200, height: 800, author: 'agent' });

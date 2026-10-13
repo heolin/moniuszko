@@ -11,7 +11,8 @@ import {
   translateMatrix,
   type Matrix,
 } from './matrix.js';
-import { IDENTITY, type CompositionMeta, type GroupNode, type Layer, type Scene, type SceneNode, type TextNode, type Transform } from './types.js';
+import { DEFAULT_INNER_RATIO, DEFAULT_SIDES } from './commands.js';
+import { IDENTITY, SHAPE_KINDS, type CompositionMeta, type ShapeKind, type ShapeNode, type GroupNode, type Layer, type Scene, type SceneNode, type TextNode, type Transform } from './types.js';
 
 /** Błąd odczytu pliku kompozycji; wskazuje element, którego nie udało się zinterpretować. */
 export class CompositionParseError extends Error {}
@@ -83,6 +84,30 @@ function parseNode(el: Element): SceneNode {
       height: dims.height,
       svg: serializeXml(inner),
     };
+  }
+  if (tag === 'g' && el.hasAttribute('data-mz-shape')) {
+    const shape = required(el, 'data-mz-shape');
+    if (!(SHAPE_KINDS as readonly string[]).includes(shape)) {
+      throw new CompositionParseError(`Nieznany rodzaj kształtu „${shape}” w ${base.id}`);
+    }
+    const paint = (attr: string) => {
+      const v = required(el, attr);
+      return v === 'none' ? null : v;
+    };
+    const node: ShapeNode = {
+      ...base,
+      type: 'shape',
+      shape: shape as ShapeKind,
+      width: num(el, 'data-mz-width'),
+      height: num(el, 'data-mz-height'),
+      fill: paint('data-mz-fill'),
+      stroke: paint('data-mz-stroke'),
+      strokeWidth: num(el, 'data-mz-stroke-width'),
+      cornerRadius: el.hasAttribute('data-mz-radius') ? num(el, 'data-mz-radius') : 0,
+      sides: el.hasAttribute('data-mz-sides') ? num(el, 'data-mz-sides') : DEFAULT_SIDES[shape as ShapeKind],
+      innerRatio: el.hasAttribute('data-mz-inner-ratio') ? num(el, 'data-mz-inner-ratio') : DEFAULT_INNER_RATIO,
+    };
+    return node;
   }
   if (tag === 'g' && el.getAttribute('data-mz-group') === '1') {
     const group: GroupNode = { ...base, type: 'group', children: elementChildren(el).map(parseNode) };

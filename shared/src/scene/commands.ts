@@ -17,7 +17,7 @@ import {
   type Matrix,
 } from './matrix.js';
 import { findNode, getContainer, getLayer, getNode, parentMatrix, randomId, walkNodes, worldMatrix } from './tree.js';
-import type { AssetNode, GroupNode, Layer, Rect, Scene, SceneNode, TextNode, Transform } from './types.js';
+import type { AssetNode, GroupNode, Layer, Rect, Scene, SceneNode, ShapeKind, ShapeNode, TextNode, Transform } from './types.js';
 
 export class CommandError extends Error {}
 
@@ -585,6 +585,69 @@ export function createTextNode(props: Partial<Omit<TextNode, 'type'>> & { id: st
     lineHeight: 1.2,
     ...props,
   };
+}
+
+/**
+ * Parametry, które dotyczą tylko części rodzajów kształtów (boki wielokąta, wcięcie gwiazdy).
+ * Plik zapisuje je tylko dla tych rodzajów; przy pozostałych węzeł niesie wartości domyślne.
+ */
+export const DEFAULT_SIDES: Record<ShapeKind, number> = { rect: 4, ellipse: 0, polygon: 6, star: 5, line: 0 };
+export const DEFAULT_INNER_RATIO = 0.45;
+
+export function createShapeNode(
+  props: Partial<Omit<ShapeNode, 'type'>> & { id: string; shape: ShapeKind; width: number; height: number },
+): ShapeNode {
+  if (!(props.width > 0) || !(props.height > 0)) fail('Wymiary kształtu muszą być dodatnie');
+  const isLine = props.shape === 'line';
+  const node: ShapeNode = {
+    type: 'shape',
+    name: props.name ?? SHAPE_NAMES[props.shape],
+    transform: props.transform ?? { x: 0, y: 0, rotation: 0, skewX: 0, scaleX: 1, scaleY: 1 },
+    opacity: 1,
+    hidden: false,
+    locked: false,
+    fill: isLine ? null : '#b5452b',
+    stroke: isLine ? '#1f1e1b' : null,
+    strokeWidth: isLine ? 6 : 2,
+    cornerRadius: 0,
+    sides: DEFAULT_SIDES[props.shape],
+    innerRatio: DEFAULT_INNER_RATIO,
+    ...props,
+  };
+  validateShape(node);
+  return node;
+}
+
+const SHAPE_NAMES: Record<ShapeKind, string> = {
+  rect: 'Prostokąt',
+  ellipse: 'Elipsa',
+  polygon: 'Wielokąt',
+  star: 'Gwiazda',
+  line: 'Linia',
+};
+
+function validateShape(n: ShapeNode): void {
+  if (!(n.width > 0) || !(n.height > 0)) fail('Wymiary kształtu muszą być dodatnie');
+  if (!(n.strokeWidth >= 0)) fail('Grubość obrysu nie może być ujemna');
+  if (!(n.cornerRadius >= 0)) fail('Zaokrąglenie nie może być ujemne');
+  if ((n.shape === 'polygon' || n.shape === 'star') && !(Number.isInteger(n.sides) && n.sides >= 3 && n.sides <= 64)) {
+    fail('Liczba boków lub ramion musi być liczbą całkowitą od 3 do 64');
+  }
+  if (n.shape === 'star' && !(n.innerRatio > 0 && n.innerRatio < 1)) fail('Wcięcie gwiazdy musi być w zakresie (0, 1)');
+  if (n.shape === 'line' && n.fill !== null) fail('Linia nie ma wypełnienia');
+  if (n.shape === 'line' && n.stroke === null) fail('Linia musi mieć obrys');
+}
+
+export type ShapePatch = Partial<Pick<ShapeNode, 'fill' | 'stroke' | 'strokeWidth' | 'cornerRadius' | 'sides' | 'innerRatio' | 'width' | 'height'>>;
+
+/** Zmiana parametrów kształtu. Zmiana width/height zmienia geometrię, a nie skalę węzła. */
+export function updateShape(scene: Scene, id: string, patch: ShapePatch): Scene {
+  const s = clone(scene);
+  const node = getNode(s, id).node;
+  if (node.type !== 'shape') fail(`Węzeł „${id}” nie jest kształtem`);
+  Object.assign(node, patch);
+  validateShape(node);
+  return s;
 }
 
 /** Wszystkie identyfikatory w scenie (warstwy i węzły). */

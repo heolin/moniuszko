@@ -10,6 +10,7 @@ import {
   IconLockOpen,
   IconPhoto,
   IconFolder,
+  IconShape,
   IconTypography,
 } from '@tabler/icons-react';
 import {
@@ -54,7 +55,7 @@ function InlineName({ value, onDone }: { value: string; onDone: (v: string | nul
   );
 }
 
-const ICON = { asset: IconPhoto, text: IconTypography, group: IconFolder } as const;
+const ICON = { asset: IconPhoto, text: IconTypography, group: IconFolder, shape: IconShape } as const;
 
 function NodeRow({ node, depth, renaming, setRenaming }: { node: SceneNode; depth: number; renaming: string | null; setRenaming: (id: string | null) => void }) {
   const selection = useEditor((s) => s.selection);

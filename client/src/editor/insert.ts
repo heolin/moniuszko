@@ -1,4 +1,5 @@
 import {
+  createShapeNode,
   createTextNode,
   getNode,
   insertNode,
@@ -74,6 +75,53 @@ export function insertText(at: Point, text = 'Tekst'): string {
   const id = randomId('n');
   const fontSize = Math.round(Math.min(s.scene.width, s.scene.height) / 12);
   const node = createTextNode({ id, text, fontSize, transform: { x: at.x, y: at.y - fontSize / 2, rotation: 0, skewX: 0, scaleX: 1, scaleY: 1 } });
+  s.apply((scene) => insertAtWorld(scene, node, containerId));
+  useEditor.getState().setSelection([id]);
+  return id;
+}
+
+export type ShapePreset = 'rect' | 'square' | 'ellipse' | 'circle' | 'triangle' | 'polygon' | 'star' | 'line';
+
+export const SHAPE_PRESETS: { preset: ShapePreset; label: string }[] = [
+  { preset: 'rect', label: 'Prostokąt' },
+  { preset: 'square', label: 'Kwadrat' },
+  { preset: 'ellipse', label: 'Elipsa' },
+  { preset: 'circle', label: 'Koło' },
+  { preset: 'triangle', label: 'Trójkąt' },
+  { preset: 'polygon', label: 'Sześciokąt' },
+  { preset: 'star', label: 'Gwiazda' },
+  { preset: 'line', label: 'Linia' },
+];
+
+/**
+ * Wstawia kształt na środku płótna. Rozmiar: 20% krótszego boku płótna, prostokąt i elipsa
+ * w proporcji 3:2, linia o długości 30% i polu wysokości grubości obrysu.
+ */
+export function insertShape(preset: ShapePreset, at?: Point): string {
+  const s = useEditor.getState();
+  if (!s.scene) throw new Error('Edytor nie ma wczytanej kompozycji');
+  const containerId = insertContainer(s);
+  const unit = Math.min(s.scene.width, s.scene.height) * 0.2;
+  const id = randomId('n');
+  const label = SHAPE_PRESETS.find((p) => p.preset === preset)!.label;
+  const spec: Record<ShapePreset, Omit<Parameters<typeof createShapeNode>[0], 'id'>> = {
+    rect: { shape: 'rect', width: unit * 1.5, height: unit },
+    square: { shape: 'rect', width: unit, height: unit },
+    ellipse: { shape: 'ellipse', width: unit * 1.5, height: unit },
+    circle: { shape: 'ellipse', width: unit, height: unit },
+    triangle: { shape: 'polygon', width: unit, height: unit, sides: 3 },
+    polygon: { shape: 'polygon', width: unit, height: unit, sides: 6 },
+    star: { shape: 'star', width: unit, height: unit, sides: 5 },
+    line: { shape: 'line', width: unit * 1.5, height: 12, strokeWidth: 6 },
+  };
+  const p = spec[preset];
+  const center = at ?? { x: s.scene.width / 2, y: s.scene.height / 2 };
+  const node = createShapeNode({
+    ...p,
+    id,
+    name: label,
+    transform: { x: center.x - p.width / 2, y: center.y - p.height / 2, rotation: 0, skewX: 0, scaleX: 1, scaleY: 1 },
+  });
   s.apply((scene) => insertAtWorld(scene, node, containerId));
   useEditor.getState().setSelection([id]);
   return id;

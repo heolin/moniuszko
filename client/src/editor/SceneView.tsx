@@ -1,11 +1,11 @@
 import { memo } from 'react';
-import { textLineBaselines, transformToString, type AssetNode, type Layer, type Scene, type SceneNode, type TextNode } from '@moniuszko/shared';
+import { shapeElement, textLineBaselines, transformToString, type AssetNode, type Layer, type Scene, type SceneNode, type TextNode } from '@moniuszko/shared';
 
 type NodeProps = { node: SceneNode; selectable: Set<string>; editingTextId: string | null };
 
 /**
- * Treść grafiki z biblioteki. Ciąg SVG zmienia się tylko przy podmianie grafiki, więc React nie
- * przepisuje innerHTML podczas przesuwania.
+ * Treść grafiki z biblioteki albo element kształtu. Ciąg SVG zmienia się tylko przy zmianie
+ * treści lub parametrów, więc React nie przepisuje innerHTML podczas przesuwania.
  */
 const AssetContent = memo(function AssetContent({ svg }: { svg: string }) {
   return <g dangerouslySetInnerHTML={{ __html: svg }} />;
@@ -61,6 +61,13 @@ const NodeView = memo(function NodeView({ node, selectable, editingTextId }: Nod
           {node.children.map((c) => (
             <NodeView key={c.id} node={c} selectable={selectable} editingTextId={editingTextId} />
           ))}
+        </g>
+      );
+    case 'shape':
+      // Ten sam element co w pliku (shapeElement), więc płótno i zapis nie mogą się rozjechać.
+      return (
+        <g {...common}>
+          <AssetContent svg={shapeElement(node)} />
         </g>
       );
     default: {

@@ -18,7 +18,8 @@ Tagowanie biblioteki:
 Tworzenie kompozycji:
 1. search_graphics znajduje grafiki po tytule, opisie i tagach.
 2. create_composition tworzy pustą kompozycję z warstwami "Tło", "Obiekty", "Teksty".
-3. apply_scene_ops wstawia grafiki i teksty oraz je przesuwa, skaluje, obraca, grupuje.
+3. apply_scene_ops wstawia grafiki, teksty i proste kształty (prostokąt, koło, wielokąt, gwiazda,
+   linia) oraz je przesuwa, skaluje, obraca, grupuje.
    Układ współrzędnych: piksele płótna, początek w lewym górnym rogu, oś y w dół. Warstwy
    i obiekty są wymienione od spodu do wierzchu. Operacje wykonują się w całości albo wcale.
 4. Wynik apply_scene_ops zawiera render PNG; sprawdź go i popraw układ kolejnymi operacjami.
@@ -266,7 +267,7 @@ export function createMcpServer(ctx: AppContext): McpServer {
     {
       title: 'Zmień kompozycję',
       description: `Wykonuje listę operacji na kompozycji, w całości albo wcale. Operacje:
-insert_graphic, add_text, update, move_by, delete, duplicate, group, ungroup, reorder, move_to_layer,
+insert_graphic, add_text, add_shape, update, move_by, delete, duplicate, group, ungroup, reorder, move_to_layer,
 align, distribute, flip, add_layer, update_layer, delete_layer, set_canvas.
 Pole "as" nadaje utworzonemu obiektowi alias; kolejne operacje odwołują się do niego jako "$alias".
 Warstwę można wskazać id, aliasem albo dokładną nazwą. Zwraca aliasy, strukturę i render PNG.`,

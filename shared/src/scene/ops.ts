@@ -7,6 +7,7 @@ import {
   CommandError,
   addLayer,
   align,
+  createShapeNode,
   createTextNode,
   deleteLayer,
   deleteNodes,
@@ -25,11 +26,12 @@ import {
   ungroup,
   updateLayer,
   updateNode,
+  updateShape,
   updateText,
   type CommandCtx,
 } from './commands.js';
 import { getNode, randomId } from './tree.js';
-import type { AssetNode, Scene } from './types.js';
+import { SHAPE_KINDS, type AssetNode, type Scene } from './types.js';
 
 const ref = z.string().min(1).describe('Id węzła albo alias "$nazwa" nadany wcześniej polem "as"');
 const layerRef = z.string().min(1).describe('Id warstwy, alias "$nazwa" albo dokładna nazwa warstwy');
@@ -46,6 +48,15 @@ const textProps = {
   fill: z.string().min(1).optional().describe('Kolor tekstu, np. "#1f1e1b"'),
   anchor: z.enum(['start', 'middle', 'end']).optional().describe('Wyrównanie względem punktu x'),
   lineHeight: z.number().positive().optional(),
+};
+
+const shapeProps = {
+  fill: z.string().nullable().optional().describe('Kolor wypełnienia albo null (bez wypełnienia)'),
+  stroke: z.string().nullable().optional().describe('Kolor obrysu albo null (bez obrysu)'),
+  strokeWidth: z.number().min(0).optional(),
+  cornerRadius: z.number().min(0).optional().describe('Zaokrąglenie narożników prostokąta'),
+  sides: z.number().int().min(3).max(64).optional().describe('Boki wielokąta albo ramiona gwiazdy'),
+  innerRatio: z.number().gt(0).lt(1).optional().describe('Wcięcie gwiazdy: promień wewnętrzny / zewnętrzny'),
 };
 
 export const sceneOpSchema = z.discriminatedUnion('op', [
@@ -73,6 +84,19 @@ export const sceneOpSchema = z.discriminatedUnion('op', [
     as: alias,
   }),
   z.object({
+    op: z.literal('add_shape'),
+    shape: z.enum(SHAPE_KINDS).describe('rect (prostokąt, kwadrat), ellipse (elipsa, koło), polygon, star, line'),
+    layer: layerRef,
+    x: z.number().describe('Lewa krawędź kształtu (przed obrotem)'),
+    y: z.number().describe('Górna krawędź kształtu (przed obrotem)'),
+    width: z.number().positive(),
+    height: z.number().positive().describe('Dla linii: wysokość pola, linia biegnie przez jego środek'),
+    rotation: z.number().optional(),
+    name: z.string().optional(),
+    ...shapeProps,
+    as: alias,
+  }),
+  z.object({
     op: z.literal('update'),
     node: ref,
     x: z.number().optional().describe('Przesunięcie węzła w układzie rodzica (dla grafiki: lewy górny róg przed obrotem)'),
@@ -86,6 +110,12 @@ export const sceneOpSchema = z.discriminatedUnion('op', [
     locked: z.boolean().optional(),
     text: z.string().min(1).optional(),
     ...textProps,
+    fill: z.string().nullable().optional().describe('Kolor tekstu albo wypełnienie kształtu (null: bez wypełnienia)'),
+    stroke: shapeProps.stroke,
+    strokeWidth: shapeProps.strokeWidth,
+    cornerRadius: shapeProps.cornerRadius,
+    sides: shapeProps.sides,
+    innerRatio: shapeProps.innerRatio,
   }),
   z.object({ op: z.literal('move_by'), nodes: z.array(ref).min(1), dx: z.number(), dy: z.number() }),
   z.object({ op: z.literal('delete'), nodes: z.array(ref).min(1) }),
@@ -250,6 +280,23 @@ async function applyOne(
       remember(aliases, op.as, id);
       return { scene: s, ids: [id] };
     }
+    case 'add_shape': {
+      const layerId = resolveLayer(scene, op.layer, aliases);
+      const id = randomId('n');
+      const { op: _op, layer: _layer, as: _as, rotation, x, y, ...props } = op;
+      const shape = createShapeNode({
+        ...stripUndefined(props),
+        id,
+        shape: op.shape,
+        width: op.width,
+        height: op.height,
+        transform: { x, y, rotation: 0, skewX: 0, scaleX: 1, scaleY: 1 },
+      });
+      let s = insertNode(scene, shape, { containerId: layerId });
+      if (rotation) s = setRotation(s, id, rotation, deps);
+      remember(aliases, op.as, id);
+      return { scene: s, ids: [id] };
+    }
     case 'update': {
       const id = node(op.node);
       let s = scene;
@@ -259,17 +306,29 @@ async function applyOne(
       if (rotation !== undefined) s = setRotation(s, id, rotation, deps);
       const props = stripUndefined({ opacity, name, hidden, locked });
       if (Object.keys(props).length) s = updateNode(s, id, props);
+      // `fill` dotyczy tekstu albo kształtu, zależnie od rodzaju węzła.
+      const isShape = getNode(s, id).node.type === 'shape';
+      if (!isShape && op.fill === null) throw new CommandError('Tekst musi mieć kolor (fill nie może być null)');
       const textPatch = stripUndefined({
         text: op.text,
         fontSize: op.fontSize,
         fontFamily: op.fontFamily,
         fontWeight: op.fontWeight,
         fontStyle: op.fontStyle,
-        fill: op.fill,
+        fill: isShape ? undefined : (op.fill ?? undefined),
         anchor: op.anchor,
         lineHeight: op.lineHeight,
       });
       if (Object.keys(textPatch).length) s = updateText(s, id, textPatch);
+      const shapePatch = stripUndefined({
+        fill: isShape ? op.fill : undefined,
+        stroke: op.stroke,
+        strokeWidth: op.strokeWidth,
+        cornerRadius: op.cornerRadius,
+        sides: op.sides,
+        innerRatio: op.innerRatio,
+      });
+      if (Object.keys(shapePatch).length) s = updateShape(s, id, shapePatch);
       return { scene: s, ids: [] };
     }
     case 'move_by':

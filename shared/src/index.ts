@@ -5,6 +5,7 @@ export * from './scene/bounds.js';
 export * from './scene/tree.js';
 export * from './scene/commands.js';
 export * from './scene/serialize.js';
+export * from './scene/shapes.js';
 export * from './scene/parse.js';
 export * from './scene/ops.js';
 export * from './svg/assetSvg.js';

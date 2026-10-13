@@ -56,7 +56,32 @@ export type GroupNode = NodeBase & {
   children: SceneNode[];
 };
 
-export type SceneNode = AssetNode | TextNode | GroupNode;
+export const SHAPE_KINDS = ['rect', 'ellipse', 'polygon', 'star', 'line'] as const;
+export type ShapeKind = (typeof SHAPE_KINDS)[number];
+
+/**
+ * Prymityw rysowany przez edytor. Kształt wypełnia lokalny prostokąt (0,0,width,height);
+ * kwadrat i koło to prostokąt i elipsa o równych bokach.
+ */
+export type ShapeNode = NodeBase & {
+  type: 'shape';
+  shape: ShapeKind;
+  width: number;
+  height: number;
+  /** null: bez wypełnienia. Linia nigdy nie ma wypełnienia. */
+  fill: string | null;
+  /** null: bez obrysu. */
+  stroke: string | null;
+  strokeWidth: number;
+  /** Zaokrąglenie narożników prostokąta. */
+  cornerRadius: number;
+  /** Liczba boków wielokąta albo ramion gwiazdy. */
+  sides: number;
+  /** Stosunek promienia wewnętrznego do zewnętrznego gwiazdy (0–1). */
+  innerRatio: number;
+};
+
+export type SceneNode = AssetNode | TextNode | GroupNode | ShapeNode;
 
 export type Layer = {
   id: string;

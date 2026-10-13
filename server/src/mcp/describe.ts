@@ -30,7 +30,9 @@ type NodeSummary = {
   graphicId?: string;
   text?: string;
   fontSize?: number;
-  fill?: string;
+  fill?: string | null;
+  shape?: string;
+  stroke?: string | null;
   children?: NodeSummary[];
 };
 
@@ -63,6 +65,11 @@ function summarize(node: SceneNode, parent: Matrix): NodeSummary {
     s.text = node.text;
     s.fontSize = node.fontSize;
     s.fill = node.fill;
+  }
+  if (node.type === 'shape') {
+    s.shape = node.shape;
+    s.fill = node.fill;
+    s.stroke = node.stroke;
   }
   if (node.type === 'group') s.children = node.children.map((c) => summarize(c, world));
   return s;
