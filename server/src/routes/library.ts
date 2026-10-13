@@ -45,7 +45,7 @@ export function libraryRoutes(ctx: AppContext): Router {
 
   r.get('/graphics', (req, res) => {
     const q = listQuery.parse(req.query);
-    res.json(ctx.library.repo.list(q as Parameters<typeof ctx.library.repo.list>[0]));
+    res.json(ctx.library.repo.list(q));
   });
 
   r.get('/graphics/facets', (_req, res) => {

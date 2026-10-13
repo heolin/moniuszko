@@ -36,7 +36,8 @@ export type GraphicListQuery = {
   tagStatus?: TagStatus;
   category?: string;
   tags?: string[];
-  sort?: 'newest' | 'title' | 'recent-use';
+  /** Bez `sort`: trafność, gdy jest `q`, w przeciwnym razie najnowsze. */
+  sort?: 'newest' | 'title' | 'recent-use' | 'relevance';
   limit?: number;
   offset?: number;
 };

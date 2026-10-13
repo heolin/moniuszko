@@ -121,6 +121,22 @@ export function scaleBy(scene: Scene, ids: string[], sx: number, sy: number, ori
   return s;
 }
 
+/**
+ * Skaluje jeden węzeł w jego własnych osiach (tak działają uchwyty narożne obróconego
+ * obiektu). Punkt `anchor` w lokalnym układzie węzła zostaje w miejscu.
+ */
+export function scaleNode(scene: Scene, id: string, fx: number, fy: number, anchor: Point): Scene {
+  if (fx === 0 || fy === 0) fail('Skala nie może być zerowa');
+  const s = clone(scene);
+  const node = getNode(s, id).node;
+  const t = node.transform;
+  const fixed = applyToPoint(toMatrix(t), anchor.x, anchor.y);
+  const next: Transform = { ...t, scaleX: t.scaleX * fx, scaleY: t.scaleY * fy };
+  const moved = applyToPoint(toMatrix({ ...next, x: 0, y: 0 }), anchor.x, anchor.y);
+  node.transform = { ...next, x: fixed.x - moved.x, y: fixed.y - moved.y };
+  return s;
+}
+
 /** Odbicie lustrzane węzłów względem środka zaznaczenia. */
 export function flip(scene: Scene, ids: string[], axis: 'horizontal' | 'vertical', ctx: CommandCtx): Scene {
   const s = clone(scene);
@@ -288,6 +304,29 @@ export function duplicate(
   return { scene: s, ids: created };
 }
 
+/**
+ * Wkleja kopie węzłów (z nowymi identyfikatorami) na wierzch kontenera. Węzły zachowują swoje
+ * transformacje, więc wklejone do innego kontenera trafiają w to samo miejsce jego układu.
+ */
+export function pasteNodes(
+  scene: Scene,
+  nodes: SceneNode[],
+  containerId: string,
+  offset: Point = { x: 0, y: 0 },
+  newId: () => string = () => randomId('n'),
+): { scene: Scene; ids: string[] } {
+  const s = clone(scene);
+  const container = getContainer(s, containerId);
+  const ids: string[] = [];
+  for (const n of nodes) {
+    const copy = reidentify(structuredClone(n), newId);
+    copy.transform = { ...copy.transform, x: copy.transform.x + offset.x, y: copy.transform.y + offset.y };
+    container.children.push(copy);
+    ids.push(copy.id);
+  }
+  return { scene: s, ids };
+}
+
 function reidentify(node: SceneNode, newId: () => string): SceneNode {
   const oldId = node.id;
   node.id = newId();
@@ -442,20 +481,29 @@ export function updateText(scene: Scene, id: string, patch: TextPatch): Scene {
   return s;
 }
 
-/** Podmienia treść instancji na nowszą wersję grafiki z biblioteki. Transformacja zostaje. */
+/**
+ * Podmienia treść instancji: na nowszą wersję tej samej grafiki albo (z `assetId`) na inną
+ * grafikę z biblioteki. Położenie i obrót zostają; skala jest dobrana tak, żeby nowa treść
+ * zajęła prostokąt o tej samej szerokości co poprzednia.
+ */
 export function replaceAssetContent(
   scene: Scene,
   id: string,
-  content: { svg: string; width: number; height: number; version: number },
+  content: { svg: string; width: number; height: number; version: number; assetId?: string },
 ): Scene {
   const s = clone(scene);
   const node = getNode(s, id).node;
   if (node.type !== 'asset') fail(`Węzeł „${id}” nie jest grafiką z biblioteki`);
   const asset: AssetNode = node;
+  const k = asset.width / content.width;
+  if (k !== 1) {
+    asset.transform = { ...asset.transform, scaleX: asset.transform.scaleX * k, scaleY: asset.transform.scaleY * k };
+  }
   asset.svg = content.svg;
   asset.width = content.width;
   asset.height = content.height;
   asset.assetVersion = content.version;
+  if (content.assetId) asset.assetId = content.assetId;
   return s;
 }
 

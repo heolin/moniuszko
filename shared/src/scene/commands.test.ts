@@ -11,7 +11,10 @@ import {
   insertNode,
   moveBy,
   moveToContainer,
+  pasteNodes,
   reorder,
+  replaceAssetContent,
+  scaleNode,
   resize,
   rotateBy,
   sceneBounds,
@@ -154,6 +157,44 @@ describe('komendy sceny', () => {
     s = moveToContainer(s, ['c'], 'g');
     expect(getNode(s, 'c').parent.id).toBe('g');
     expectRect(sceneBounds(s, 'c', ctx), before);
+  });
+
+  it('skalowanie w osiach węzła zostawia punkt zakotwiczenia w miejscu', () => {
+    let s = setRotation(scene(), 'b', 30, ctx);
+    const before = getNode(s, 'b').node.transform;
+    const anchorWorld = (sc: Scene) => {
+      const t = getNode(sc, 'b').node.transform;
+      const rad = (t.rotation * Math.PI) / 180;
+      // prawy dolny róg lokalnego prostokąta 100×50
+      const lx = 100 * t.scaleX;
+      const ly = 50 * t.scaleY;
+      return { x: t.x + lx * Math.cos(rad) - ly * Math.sin(rad), y: t.y + lx * Math.sin(rad) + ly * Math.cos(rad) };
+    };
+    const a = anchorWorld(s);
+    s = scaleNode(s, 'b', 2, 0.5, { x: 100, y: 50 });
+    const t = getNode(s, 'b').node.transform;
+    expect(t.scaleX).toBeCloseTo(before.scaleX * 2);
+    expect(t.scaleY).toBeCloseTo(before.scaleY * 0.5);
+    const b = anchorWorld(s);
+    expect(b.x).toBeCloseTo(a.x);
+    expect(b.y).toBeCloseTo(a.y);
+  });
+
+  it('wkleja kopie do wskazanej warstwy z nowymi id', () => {
+    const s = scene();
+    const node = getNode(s, 'a').node;
+    let n = 0;
+    const r = pasteNodes(s, [node], s.layers[1]!.id, { x: 5, y: 5 }, () => `p${++n}`);
+    expect(r.ids).toEqual(['p1']);
+    expect(r.scene.layers[1]!.children[0]!.transform.x).toBe(5);
+    expect((r.scene.layers[1]!.children[0] as AssetNode).svg).toContain('id="p1-r"');
+  });
+
+  it('zamiana grafiki zachowuje szerokość na płótnie', () => {
+    const s = replaceAssetContent(scene(), 'a', { svg: '<svg/>', width: 50, height: 50, version: 2, assetId: 'inna' });
+    const n = getNode(s, 'a').node as AssetNode;
+    expect(n.assetId).toBe('inna');
+    expect(sceneBounds(s, 'a', ctx)!.width).toBeCloseTo(100);
   });
 
   it('nie pozwala usunąć ostatniej warstwy', () => {
