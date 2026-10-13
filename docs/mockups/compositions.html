@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Kompozycje</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="c-village" viewBox="0 0 160 90"><rect width="160" height="90" fill="#cfe6f3"/><rect y="62" width="160" height="28" fill="#9cc77a"/><circle cx="130" cy="20" r="10" fill="#f4c242"/><polygon points="40,62 40,40 60,26 80,40 80,62" fill="#e8d3b0"/><polygon points="36,42 60,22 84,42" fill="#b5452b"/><circle cx="105" cy="45" r="14" fill="#4f8a3c"/><rect x="102" y="52" width="6" height="12" fill="#7a5233"/><text x="10" y="16" font-size="10" font-family="sans-serif" fill="#2f2e2a">Wieś latem</text></symbol>
+    <symbol id="c-sea" viewBox="0 0 160 90"><rect width="160" height="90" fill="#f3e6cf"/><rect y="55" width="160" height="35" fill="#3c6e8f"/><polygon points="80,20 80,55 100,55" fill="#f3efe4"/><path d="M60 56 H110 L104 64 H66 Z" fill="#b5452b"/><path d="M20 30 Q26 24 32 30 Q38 24 44 30" fill="none" stroke="#2f2e2a" stroke-width="1.5"/></symbol>
+    <symbol id="c-mount" viewBox="0 0 160 90"><rect width="160" height="90" fill="#e6edf2"/><polygon points="0,90 50,25 80,60 105,35 160,90" fill="#7d8b99"/><polygon points="50,25 58,36 42,36" fill="#fff"/><circle cx="30" cy="70" r="10" fill="#4f8a3c"/><circle cx="130" cy="72" r="9" fill="#4f8a3c"/></symbol>
+    <symbol id="c-park" viewBox="0 0 160 90"><rect width="160" height="90" fill="#eaf3e3"/><circle cx="30" cy="45" r="16" fill="#4f8a3c"/><circle cx="130" cy="42" r="18" fill="#5d9b48"/><circle cx="80" cy="50" r="6" fill="#e2b48f"/><rect x="74" y="56" width="12" height="20" fill="#3c6e8f"/><circle cx="55" cy="75" r="5" fill="#d9637a"/><circle cx="105" cy="78" r="5" fill="#d9637a"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html">Biblioteka</a>
+    <a href="compositions.html" class="on">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+
+<div class="main">
+  <aside class="side">
+    <div class="filter">
+      <h3>Pokaż</h3>
+      <div class="row on"><span>Wszystkie</span><span>12</span></div>
+      <div class="row"><span>Szkice agenta do przejrzenia</span><span>3</span></div>
+      <div class="row"><span>Moje</span><span>9</span></div>
+    </div>
+    <div class="filter">
+      <h3>Folder</h3>
+      <div class="help">compositions/ w workspace<br><a href="settings.html">zmień w ustawieniach</a></div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="toolbar-row">
+      <div class="search"><input placeholder="Szukaj kompozycji…"></div>
+      <select style="width:auto"><option>Ostatnio zmieniane</option><option>Nazwa A–Z</option></select>
+      <div class="spacer"></div>
+      <button class="primary">Nowa kompozycja</button>
+    </div>
+
+    <div class="grid wide">
+      <a href="editor.html" class="card sel" style="text-decoration:none"><div class="thumb"><svg><use href="#c-village"/></svg></div><div class="meta"><div class="t">Wieś latem</div><div class="s"><span>1600 × 900 · zmieniono 10 min temu</span><span class="badge reviewed">moja</span></div></div></a>
+      <div class="card"><div class="thumb"><svg><use href="#c-sea"/></svg></div><div class="meta"><div class="t">Żaglówka o zachodzie</div><div class="s"><span>1600 × 900 · agent, dziś 09:12</span><span class="badge draft">szkic agenta</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#c-mount"/></svg></div><div class="meta"><div class="t">Dolina w górach</div><div class="s"><span>1600 × 900 · agent, wczoraj</span><span class="badge draft">szkic agenta</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#c-park"/></svg></div><div class="meta"><div class="t">Park miejski</div><div class="s"><span>1600 × 900 · zmieniono 3 dni temu</span><span class="badge reviewed">moja</span></div></div></div>
+    </div>
+  </main>
+</div>
+
+<!-- Okno „Nowa kompozycja” pokazane jako zwinięty przykład pod listą -->
+<div style="position:fixed;right:20px;bottom:20px;width:340px" class="modal">
+  <header><h2>Nowa kompozycja</h2><button class="icon">×</button></header>
+  <div class="body">
+    <label class="f" style="margin-top:0">Nazwa</label>
+    <input value="Bez tytułu">
+    <label class="f">Rozmiar płótna</label>
+    <div class="insp-row"><select><option>1600 × 900 (16:9)</option><option>1080 × 1080</option><option>A4 pion</option><option>własny…</option></select><input value="px" disabled></div>
+  </div>
+  <footer><button>Anuluj</button><button class="primary">Utwórz</button></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Edytor</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html">Biblioteka</a>
+    <a href="compositions.html" class="on">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+
+<!-- Pasek narzędzi edytora -->
+<div class="ed-toolbar">
+  <a href="compositions.html"><button class="icon" title="Wróć do listy">←</button></a>
+  <span class="name">Wieś latem</span><span class="help" style="margin:0">zapisano</span>
+  <div class="sep"></div>
+  <button class="icon" title="Cofnij (Ctrl+Z)">↶</button>
+  <button class="icon" title="Ponów (Ctrl+Shift+Z)">↷</button>
+  <div class="sep"></div>
+  <button class="icon active" title="Zaznaczanie (V)">➚</button>
+  <button class="icon" title="Tekst (T)">T</button>
+  <button class="icon" title="Przesuwanie widoku (H)">✋</button>
+  <div class="sep"></div>
+  <button title="Grupuj (Ctrl+G)">Grupuj</button>
+  <button title="Rozgrupuj (Ctrl+Shift+G)">Rozgrupuj</button>
+  <div class="sep"></div>
+  <button class="icon" title="Na wierzch">⤒</button>
+  <button class="icon" title="Wyżej">↑</button>
+  <button class="icon" title="Niżej">↓</button>
+  <button class="icon" title="Na spód">⤓</button>
+  <div class="sep"></div>
+  <button class="icon" title="Wyrównaj do lewej">⊢</button>
+  <button class="icon" title="Wyśrodkuj w poziomie">⊣⊢</button>
+  <button class="icon" title="Wyrównaj do prawej">⊣</button>
+  <button class="icon" title="Rozłóż równomiernie">⋯</button>
+  <div class="spacer"></div>
+  <button class="icon" title="Odwróć w poziomie">⇋</button>
+  <a href="export.html"><button class="primary">Eksportuj…</button></a>
+</div>
+
+<div class="main">
+  <!-- Warstwy -->
+  <aside class="side">
+    <div class="panel-tabs"><a href="editor.html" class="on">Warstwy</a><a href="editor-library.html">Biblioteka</a></div>
+    <div class="layer head"><span class="ic">👁</span><span class="ic">▾</span><span class="n">Teksty</span><span class="ic">🔓</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">T</span><span class="n">„Wieś latem”</span></div>
+    <div class="layer head"><span class="ic">👁</span><span class="ic">▾</span><span class="n">Obiekty</span><span class="ic">🔓</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">▾</span><span class="n">Zagroda</span><span class="t">grupa</span></div>
+    <div class="layer sel" style="padding-left:48px"><span class="ic">◇</span><span class="n">Drzewo liściaste</span></div>
+    <div class="layer" style="padding-left:48px"><span class="ic">◇</span><span class="n">Dom wiejski</span></div>
+    <div class="layer" style="padding-left:48px"><span class="ic">◇</span><span class="n">Płot drewniany</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">◇</span><span class="n">Ptak</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">◇</span><span class="n">Ptak</span><span class="t">kopia</span></div>
+    <div class="layer head"><span class="ic">👁</span><span class="ic">▾</span><span class="n">Tło</span><span class="ic">🔒</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">◇</span><span class="n">Słońce</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">◇</span><span class="n">Góra ze śniegiem</span></div>
+    <div class="layer" style="padding-left:30px"><span class="ic">▭</span><span class="n">Niebo i łąka</span></div>
+    <div class="actions"><button>+ Warstwa</button></div>
+  </aside>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <div class="notice">Agent zmienił tę kompozycję o 10:42 (dodał 2 ptaki). <button>Pokaż zmiany</button><button>Cofnij zmiany agenta</button></div>
+    <div class="artboard">
+      <svg viewBox="0 0 1600 900">
+        <!-- Tło -->
+        <rect width="1600" height="900" fill="#cfe6f3"/>
+        <rect y="620" width="1600" height="280" fill="#9cc77a"/>
+        <g transform="translate(1100 380) scale(5)"><polygon points="5,85 38,30 60,62 72,45 95,85" fill="#7d8b99"/><polygon points="38,30 46,44 30,44" fill="#fff"/></g>
+        <g transform="translate(1280 60) scale(2.2)"><g stroke="#e9a72b" stroke-width="5" stroke-linecap="round"><line x1="50" y1="8" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="92"/><line x1="8" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="92" y2="50"/><line x1="20" y1="20" x2="28" y2="28"/><line x1="72" y1="72" x2="80" y2="80"/><line x1="20" y1="80" x2="28" y2="72"/><line x1="72" y1="28" x2="80" y2="20"/></g><circle cx="50" cy="50" r="22" fill="#f4c242"/></g>
+        <!-- Obiekty -->
+        <g transform="translate(300 300) scale(4.2)"><rect x="22" y="45" width="56" height="42" fill="#e8d3b0"/><polygon points="15,48 50,18 85,48" fill="#b5452b"/><rect x="44" y="62" width="14" height="25" fill="#6b4a2e"/><rect x="28" y="54" width="11" height="11" fill="#9cc6e0"/><rect x="62" y="54" width="11" height="11" fill="#9cc6e0"/></g>
+        <g transform="translate(250 560) scale(4)"><g fill="#c9a27a"><rect x="10" y="40" width="10" height="45"/><rect x="30" y="40" width="10" height="45"/><rect x="50" y="40" width="10" height="45"/><rect x="70" y="40" width="10" height="45"/><rect x="5" y="50" width="85" height="7"/><rect x="5" y="70" width="85" height="7"/></g></g>
+        <g transform="translate(760 290) rotate(-4 160 170) scale(3.4)"><rect x="44" y="60" width="12" height="30" fill="#7a5233"/><circle cx="50" cy="42" r="28" fill="#4f8a3c"/><circle cx="36" cy="50" r="16" fill="#5d9b48"/><circle cx="64" cy="50" r="16" fill="#5d9b48"/></g>
+        <g transform="translate(640 120) scale(0.9)"><path d="M15 55 Q32 35 50 52 Q68 35 85 55" fill="none" stroke="#2f2e2a" stroke-width="5" stroke-linecap="round"/></g>
+        <g transform="translate(760 170) scale(0.7)"><path d="M15 55 Q32 35 50 52 Q68 35 85 55" fill="none" stroke="#2f2e2a" stroke-width="5" stroke-linecap="round"/></g>
+        <!-- Teksty -->
+        <text x="80" y="140" font-family="Georgia, serif" font-size="96" fill="#2f2e2a">Wieś latem</text>
+
+        <!-- Nakładka zaznaczenia (w aplikacji rysuje ją Moveable poza treścią SVG) -->
+        <g transform="rotate(-4 920 460)" fill="#fff" stroke="#b5452b" stroke-width="3">
+          <rect x="800" y="300" width="240" height="320" fill="none" stroke-dasharray="10 6"/>
+          <line x1="920" y1="300" x2="920" y2="250"/>
+          <circle cx="920" cy="245" r="10"/>
+          <rect x="792" y="292" width="16" height="16"/><rect x="1032" y="292" width="16" height="16"/>
+          <rect x="792" y="612" width="16" height="16"/><rect x="1032" y="612" width="16" height="16"/>
+          <rect x="912" y="292" width="16" height="16"/><rect x="912" y="612" width="16" height="16"/>
+          <rect x="792" y="452" width="16" height="16"/><rect x="1032" y="452" width="16" height="16"/>
+        </g>
+      </svg>
+    </div>
+    <div class="zoom">50% · 1600 × 900</div>
+  </div>
+
+  <!-- Inspektor -->
+  <aside class="side right">
+    <div class="insp-sec">
+      <h3>Zaznaczenie</h3>
+      <div style="margin-top:6px;font-weight:600">Drzewo liściaste</div>
+      <div class="help">grafika z biblioteki · <a href="library.html">pokaż w bibliotece</a></div>
+    </div>
+    <div class="insp-sec">
+      <h3>Położenie i rozmiar</h3>
+      <div class="insp-row"><div><label class="f">X</label><input value="800"></div><div><label class="f">Y</label><input value="300"></div></div>
+      <div class="insp-row"><div><label class="f">Szerokość</label><input value="240"></div><div><label class="f">Wysokość</label><input value="320"></div></div>
+      <div class="insp-row"><div><label class="f">Obrót</label><input value="-4°"></div><div><label class="f">Proporcje</label><select><option>zachowaj</option><option>swobodnie</option></select></div></div>
+    </div>
+    <div class="insp-sec">
+      <h3>Wygląd</h3>
+      <label class="f">Krycie</label><input type="range" value="100">
+      <div class="actions"><button>Odwróć poziomo</button><button>Odwróć pionowo</button></div>
+    </div>
+    <div class="insp-sec">
+      <h3>Instancja</h3>
+      <div class="help">Kopia grafiki z biblioteki wklejona do pliku kompozycji. Biblioteka ma nowszą wersję tej grafiki.</div>
+      <div class="actions"><button>Podmień na aktualną wersję</button><button>Zamień na inną grafikę…</button></div>
+    </div>
+    <div>
+      <h3>Tekst (gdy zaznaczony jest tekst)</h3>
+      <div class="insp-row"><div><label class="f">Font</label><select><option>Georgia</option></select></div><div><label class="f">Rozmiar</label><input value="96"></div></div>
+      <div class="insp-row"><div><label class="f">Kolor</label><input value="#2f2e2a"></div><div><label class="f">Wyrównanie</label><select><option>do lewej</option></select></div></div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

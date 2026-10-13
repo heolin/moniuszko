@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Import</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html" class="on">Biblioteka</a>
+    <a href="compositions.html">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+<div class="main"><main class="content"></main></div>
+
+<!-- Okno po upuszczeniu 6 plików -->
+<div class="overlay">
+  <div class="modal">
+    <header><h2>Import 6 plików</h2><button class="icon">×</button></header>
+    <div class="body">
+      <div style="display:flex;justify-content:space-between;font-size:13px"><span>Przetworzono 4 z 6</span><span style="color:var(--muted)">sanityzacja → miniatura → zapis</span></div>
+      <div class="bar"><i style="width:66%"></i></div>
+      <div class="filelist">
+        <div class="r"><span class="n">oak-tree.svg</span><span class="st ok">dodano</span></div>
+        <div class="r"><span class="n">windmill.svg</span><span class="st ok">dodano</span></div>
+        <div class="r"><span class="n">cow_spotted.svg</span><span class="st warn">dodano · usunięto &lt;script&gt; i 2 atrybuty onclick</span></div>
+        <div class="r"><span class="n">house-red.svg</span><span class="st warn">duplikat „Dom wiejski” · <a href="#">pomiń</a> / <a href="#">dodaj mimo to</a></span></div>
+        <div class="r"><span class="n">logo-scan.png</span><span class="st err">odrzucono · to nie jest plik SVG</span></div>
+        <div class="r"><span class="n">barn.svg</span><span class="st">przetwarzanie…</span></div>
+      </div>
+      <p class="help" style="margin-top:12px">Nowe grafiki trafiają do biblioteki ze statusem „bez metadanych”. Agent znajdzie je przez narzędzie MCP <code>list_untagged</code>.</p>
+    </div>
+    <footer><button>Ukryj</button><button class="primary">Pokaż dodane</button></footer>
+  </div>
+</div>
+</body>
+</html>

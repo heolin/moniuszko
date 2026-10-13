@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Eksport</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html">Biblioteka</a>
+    <a href="compositions.html" class="on">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+</header>
+<div class="ed-toolbar"><span class="name">Wieś latem</span></div>
+<div class="main"><div class="canvas-wrap"></div></div>
+
+<div class="overlay">
+  <div class="modal">
+    <header><h2>Eksport kompozycji</h2><a href="editor.html"><button class="icon">×</button></a></header>
+    <div class="body">
+      <h3 style="margin-bottom:8px">Tryb</h3>
+      <div class="option on">
+        <input type="radio" checked style="width:auto">
+        <div><strong>Plik samodzielny</strong>
+          <p>Treść grafik jest wklejona do pliku, atrybuty edytora (<code>data-mz-*</code>) są usunięte. Plik otwiera się bez dostępu do biblioteki.</p></div>
+      </div>
+      <div class="option">
+        <input type="radio" style="width:auto">
+        <div><strong>Z referencjami do biblioteki</strong>
+          <p>Każda grafika jest odwołaniem do pliku w <code>library/</code>. Zmiana grafiki w bibliotece jest widoczna w tym pliku. Plik wymaga dostępu do folderu biblioteki.</p></div>
+      </div>
+
+      <label class="f">Nazwa pliku</label>
+      <input value="wies-latem.svg">
+      <label class="f">Folder</label>
+      <div class="path-row"><input value="/home/wojciech/moniuszko-workspace/exports"><button>Wybierz…</button></div>
+
+      <p class="help" style="margin-top:12px">Teksty zostają elementami <code>&lt;text&gt;</code>. Odbiorca musi mieć zainstalowany font „Georgia”.</p>
+    </div>
+    <footer><a href="editor.html"><button>Anuluj</button></a><button class="primary">Eksportuj</button></footer>
+  </div>
+</div>
+</body>
+</html>

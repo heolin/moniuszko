@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Edytor, panel biblioteki</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="g-tree" viewBox="0 0 100 100"><rect x="44" y="60" width="12" height="30" fill="#7a5233"/><circle cx="50" cy="42" r="28" fill="#4f8a3c"/><circle cx="36" cy="50" r="16" fill="#5d9b48"/><circle cx="64" cy="50" r="16" fill="#5d9b48"/></symbol>
+    <symbol id="g-house" viewBox="0 0 100 100"><rect x="22" y="45" width="56" height="42" fill="#e8d3b0"/><polygon points="15,48 50,18 85,48" fill="#b5452b"/><rect x="44" y="62" width="14" height="25" fill="#6b4a2e"/><rect x="28" y="54" width="11" height="11" fill="#9cc6e0"/><rect x="62" y="54" width="11" height="11" fill="#9cc6e0"/></symbol>
+    <symbol id="g-flower" viewBox="0 0 100 100"><line x1="50" y1="55" x2="50" y2="92" stroke="#4f8a3c" stroke-width="4"/><g fill="#d9637a"><circle cx="50" cy="28" r="12"/><circle cx="34" cy="42" r="12"/><circle cx="66" cy="42" r="12"/><circle cx="40" cy="58" r="12"/><circle cx="60" cy="58" r="12"/></g><circle cx="50" cy="45" r="9" fill="#f4c242"/></symbol>
+    <symbol id="g-fence" viewBox="0 0 100 100"><g fill="#c9a27a"><rect x="10" y="40" width="10" height="45"/><rect x="30" y="40" width="10" height="45"/><rect x="50" y="40" width="10" height="45"/><rect x="70" y="40" width="10" height="45"/><rect x="5" y="50" width="85" height="7"/><rect x="5" y="70" width="85" height="7"/></g></symbol>
+    <symbol id="g-person" viewBox="0 0 100 100"><circle cx="50" cy="22" r="11" fill="#e2b48f"/><path d="M34 40 Q50 32 66 40 L62 70 H38 Z" fill="#3c6e8f"/><rect x="40" y="68" width="8" height="24" fill="#2f2e2a"/><rect x="52" y="68" width="8" height="24" fill="#2f2e2a"/></symbol>
+    <symbol id="g-cloud" viewBox="0 0 100 100"><g fill="#dfe8ef"><circle cx="35" cy="55" r="18"/><circle cx="55" cy="45" r="22"/><circle cx="72" cy="58" r="15"/><rect x="20" y="55" width="66" height="18" rx="9"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html">Biblioteka</a>
+    <a href="compositions.html" class="on">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+<div class="ed-toolbar">
+  <a href="compositions.html"><button class="icon">←</button></a>
+  <span class="name">Wieś latem</span><span class="help" style="margin:0">niezapisane zmiany</span>
+  <div class="spacer"></div>
+  <a href="export.html"><button class="primary">Eksportuj…</button></a>
+</div>
+
+<div class="main">
+  <aside class="side">
+    <div class="panel-tabs"><a href="editor.html">Warstwy</a><a href="editor-library.html" class="on">Biblioteka</a></div>
+    <div class="search" style="margin-bottom:8px"><input placeholder="Szukaj grafik…" value="kwiat"></div>
+    <select style="margin-bottom:10px"><option>Wszystkie kategorie</option></select>
+    <div class="mini-grid">
+      <div><svg><use href="#g-flower"/></svg></div>
+      <div><svg><use href="#g-tree"/></svg></div>
+      <div><svg><use href="#g-house"/></svg></div>
+      <div><svg><use href="#g-fence"/></svg></div>
+      <div><svg><use href="#g-person"/></svg></div>
+      <div><svg><use href="#g-cloud"/></svg></div>
+    </div>
+    <p class="help" style="margin-top:16px">Przeciągnij grafikę na płótno albo kliknij dwukrotnie, żeby wstawić ją na środku do aktywnej warstwy („Obiekty”).</p>
+  </aside>
+
+  <div class="canvas-wrap">
+    <div class="artboard">
+      <svg viewBox="0 0 1600 900">
+        <rect width="1600" height="900" fill="#cfe6f3"/>
+        <rect y="620" width="1600" height="280" fill="#9cc77a"/>
+        <g transform="translate(300 300) scale(4.2)"><use href="#g-house" width="100" height="100"/></g>
+        <g transform="translate(760 290) scale(3.4)"><use href="#g-tree" width="100" height="100"/></g>
+        <text x="80" y="140" font-family="Georgia, serif" font-size="96" fill="#2f2e2a">Wieś latem</text>
+        <!-- Przeciągana grafika: podgląd i linie przyciągania -->
+        <g opacity="0.6" transform="translate(1150 560) scale(1.6)"><use href="#g-flower" width="100" height="100"/></g>
+        <line x1="1230" y1="0" x2="1230" y2="900" stroke="#b5452b" stroke-width="2" stroke-dasharray="8 6"/>
+        <line x1="0" y1="707" x2="1600" y2="707" stroke="#b5452b" stroke-width="2" stroke-dasharray="8 6"/>
+      </svg>
+    </div>
+    <div class="zoom">50% · 1600 × 900</div>
+  </div>
+
+  <aside class="side right">
+    <h3>Nic nie zaznaczono</h3>
+    <label class="f">Nazwa kompozycji</label><input value="Wieś latem">
+    <label class="f">Rozmiar płótna</label>
+    <div class="insp-row"><input value="1600"><input value="900"></div>
+    <label class="f">Tło</label><input value="przezroczyste">
+    <label class="f">Plik roboczy</label><div class="help">compositions/wies-latem.svg</div>
+  </aside>
+</div>
+</body>
+</html>

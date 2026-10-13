@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Ustawienia</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html">Biblioteka</a>
+    <a href="compositions.html">Kompozycje</a>
+    <a href="settings.html" class="on">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+
+<div class="main">
+  <main class="content">
+    <div class="settings">
+      <section>
+        <h2>Foldery</h2>
+        <label class="f">Workspace</label>
+        <div class="path-row"><input value="/home/wojciech/moniuszko-workspace"><button>Wybierz…</button></div>
+        <div class="help">Zawiera bazę <code>moniuszko.db</code> i domyślne podfoldery poniżej.</div>
+
+        <label class="f">Biblioteka grafik</label>
+        <div class="path-row"><input value="&lt;workspace&gt;/library"><button>Wybierz…</button></div>
+        <label class="f">Kompozycje</label>
+        <div class="path-row"><input value="&lt;workspace&gt;/compositions"><button>Wybierz…</button></div>
+        <label class="f">Domyślny folder eksportu</label>
+        <div class="path-row"><input value="&lt;workspace&gt;/exports"><button>Wybierz…</button></div>
+        <div class="help">Zmiana folderu biblioteki lub kompozycji pyta, czy przenieść istniejące pliki, czy tylko wskazać nowe miejsce.</div>
+      </section>
+
+      <section>
+        <h2>Import</h2>
+        <label class="f"><input type="checkbox" checked style="width:auto"> Normalizuj SVG przez svgo (oryginał zostaje w <code>library/originals/</code>)</label>
+        <label class="f"><input type="checkbox" checked style="width:auto"> Ostrzegaj o duplikatach (ten sam skrót treści)</label>
+      </section>
+
+      <section>
+        <h2>MCP</h2>
+        <div class="kv" style="grid-template-columns:120px 1fr">
+          <span>Status</span><span><span class="dot"></span> działa</span>
+          <span>Adres</span><span><code>http://localhost:4400/mcp</code></span>
+          <span>Transport</span><span>Streamable HTTP</span>
+        </div>
+        <label class="f">Konfiguracja dla Claude Code</label>
+        <pre>claude mcp add --transport http moniuszko http://localhost:4400/mcp</pre>
+        <label class="f">Narzędzia udostępniane agentowi</label>
+        <div>
+          <span class="chip">search_graphics</span><span class="chip">get_graphic</span><span class="chip">add_graphic</span>
+          <span class="chip">update_graphic_metadata</span><span class="chip">list_untagged</span>
+          <span class="chip">list_compositions</span><span class="chip">get_composition</span>
+          <span class="chip">create_composition</span><span class="chip">apply_scene_ops</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moniuszko — Biblioteka</title>
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<!-- Przykładowe grafiki biblioteki, wspólne dla kart na tej stronie -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="g-tree" viewBox="0 0 100 100"><rect x="44" y="60" width="12" height="30" fill="#7a5233"/><circle cx="50" cy="42" r="28" fill="#4f8a3c"/><circle cx="36" cy="50" r="16" fill="#5d9b48"/><circle cx="64" cy="50" r="16" fill="#5d9b48"/></symbol>
+    <symbol id="g-house" viewBox="0 0 100 100"><rect x="22" y="45" width="56" height="42" fill="#e8d3b0"/><polygon points="15,48 50,18 85,48" fill="#b5452b"/><rect x="44" y="62" width="14" height="25" fill="#6b4a2e"/><rect x="28" y="54" width="11" height="11" fill="#9cc6e0"/><rect x="62" y="54" width="11" height="11" fill="#9cc6e0"/></symbol>
+    <symbol id="g-sun" viewBox="0 0 100 100"><g stroke="#e9a72b" stroke-width="5" stroke-linecap="round"><line x1="50" y1="8" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="92"/><line x1="8" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="92" y2="50"/><line x1="20" y1="20" x2="28" y2="28"/><line x1="72" y1="72" x2="80" y2="80"/><line x1="20" y1="80" x2="28" y2="72"/><line x1="72" y1="28" x2="80" y2="20"/></g><circle cx="50" cy="50" r="22" fill="#f4c242"/></symbol>
+    <symbol id="g-cloud" viewBox="0 0 100 100"><g fill="#dfe8ef"><circle cx="35" cy="55" r="18"/><circle cx="55" cy="45" r="22"/><circle cx="72" cy="58" r="15"/><rect x="20" y="55" width="66" height="18" rx="9"/></g></symbol>
+    <symbol id="g-bird" viewBox="0 0 100 100"><path d="M15 55 Q32 35 50 52 Q68 35 85 55" fill="none" stroke="#2f2e2a" stroke-width="5" stroke-linecap="round"/></symbol>
+    <symbol id="g-mountain" viewBox="0 0 100 100"><polygon points="5,85 38,30 60,62 72,45 95,85" fill="#7d8b99"/><polygon points="38,30 46,44 30,44" fill="#fff"/></symbol>
+    <symbol id="g-boat" viewBox="0 0 100 100"><polygon points="50,15 50,65 78,65" fill="#f3efe4" stroke="#8b8577" stroke-width="2"/><line x1="50" y1="12" x2="50" y2="68" stroke="#6b4a2e" stroke-width="3"/><path d="M18 68 H82 L72 82 H28 Z" fill="#3c6e8f"/></symbol>
+    <symbol id="g-flower" viewBox="0 0 100 100"><line x1="50" y1="55" x2="50" y2="92" stroke="#4f8a3c" stroke-width="4"/><g fill="#d9637a"><circle cx="50" cy="28" r="12"/><circle cx="34" cy="42" r="12"/><circle cx="66" cy="42" r="12"/><circle cx="40" cy="58" r="12"/><circle cx="60" cy="58" r="12"/></g><circle cx="50" cy="45" r="9" fill="#f4c242"/></symbol>
+    <symbol id="g-fence" viewBox="0 0 100 100"><g fill="#c9a27a"><rect x="10" y="40" width="10" height="45"/><rect x="30" y="40" width="10" height="45"/><rect x="50" y="40" width="10" height="45"/><rect x="70" y="40" width="10" height="45"/><rect x="5" y="50" width="85" height="7"/><rect x="5" y="70" width="85" height="7"/></g></symbol>
+    <symbol id="g-person" viewBox="0 0 100 100"><circle cx="50" cy="22" r="11" fill="#e2b48f"/><path d="M34 40 Q50 32 66 40 L62 70 H38 Z" fill="#3c6e8f"/><rect x="40" y="68" width="8" height="24" fill="#2f2e2a"/><rect x="52" y="68" width="8" height="24" fill="#2f2e2a"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>Moniuszko</div>
+  <nav class="tabs">
+    <a href="library.html" class="on">Biblioteka</a>
+    <a href="compositions.html">Kompozycje</a>
+    <a href="settings.html">Ustawienia</a>
+  </nav>
+  <div class="spacer"></div>
+  <div class="mcp-status"><span class="dot"></span>MCP: localhost:4400/mcp</div>
+</header>
+
+<div class="main">
+  <!-- Filtry -->
+  <aside class="side">
+    <div class="filter">
+      <h3>Status metadanych</h3>
+      <div class="row on"><span>Wszystkie</span><span>248</span></div>
+      <div class="row"><span>Bez metadanych</span><span>31</span></div>
+      <div class="row"><span>Otagowane przez AI</span><span>142</span></div>
+      <div class="row"><span>Sprawdzone</span><span>75</span></div>
+    </div>
+    <div class="filter">
+      <h3>Kategoria</h3>
+      <div class="row"><span>Budynki</span><span>22</span></div>
+      <div class="row"><span>Rośliny</span><span>48</span></div>
+      <div class="row"><span>Postacie</span><span>37</span></div>
+      <div class="row"><span>Krajobraz</span><span>29</span></div>
+      <div class="row"><span>Pojazdy</span><span>14</span></div>
+      <div class="row"><span>Zwierzęta</span><span>41</span></div>
+      <div class="row"><span>Bez kategorii</span><span>57</span></div>
+    </div>
+    <div class="filter">
+      <h3>Tagi</h3>
+      <span class="chip">wieś</span><span class="chip">lato</span><span class="chip">drzewo</span>
+      <span class="chip">niebo</span><span class="chip">woda</span><span class="chip">dom</span>
+      <span class="chip">płasko</span><span class="chip">kontur</span><span class="chip">+ 38</span>
+    </div>
+  </aside>
+
+  <!-- Siatka -->
+  <main class="content">
+    <div class="toolbar-row">
+      <div class="search"><input placeholder="Szukaj w tytułach, opisach i tagach…" value="drzewo lato"></div>
+      <select style="width:auto"><option>Najnowsze</option><option>Tytuł A–Z</option><option>Ostatnio używane</option></select>
+      <div class="spacer"></div>
+      <button class="primary">Dodaj pliki…</button>
+    </div>
+
+    <div class="drop"><strong>Upuść pliki SVG w dowolnym miejscu tego ekranu</strong> — jeden lub wiele naraz. Pliki zostaną oczyszczone ze skryptów i dodane bez metadanych.</div>
+
+    <div class="grid">
+      <div class="card sel"><div class="thumb"><svg><use href="#g-tree"/></svg></div><div class="meta"><div class="t">Drzewo liściaste</div><div class="s"><span>Rośliny</span><span class="badge ai">AI</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-house"/></svg></div><div class="meta"><div class="t">Dom wiejski</div><div class="s"><span>Budynki</span><span class="badge reviewed">sprawdzona</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-sun"/></svg></div><div class="meta"><div class="t">Słońce</div><div class="s"><span>Krajobraz</span><span class="badge reviewed">sprawdzona</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-cloud"/></svg></div><div class="meta"><div class="t">Chmura</div><div class="s"><span>Krajobraz</span><span class="badge ai">AI</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-bird"/></svg></div><div class="meta"><div class="t">bird-02.svg</div><div class="s"><span>—</span><span class="badge untagged">bez metadanych</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-mountain"/></svg></div><div class="meta"><div class="t">Góra ze śniegiem</div><div class="s"><span>Krajobraz</span><span class="badge ai">AI</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-boat"/></svg></div><div class="meta"><div class="t">Żaglówka</div><div class="s"><span>Pojazdy</span><span class="badge reviewed">sprawdzona</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-flower"/></svg></div><div class="meta"><div class="t">flower_pink.svg</div><div class="s"><span>—</span><span class="badge untagged">bez metadanych</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-fence"/></svg></div><div class="meta"><div class="t">Płot drewniany</div><div class="s"><span>Budynki</span><span class="badge ai">AI</span></div></div></div>
+      <div class="card"><div class="thumb"><svg><use href="#g-person"/></svg></div><div class="meta"><div class="t">Postać stojąca</div><div class="s"><span>Postacie</span><span class="badge ai">AI</span></div></div></div>
+    </div>
+  </main>
+
+  <!-- Szczegóły zaznaczonej grafiki -->
+  <aside class="side right">
+    <div class="preview-lg"><svg><use href="#g-tree"/></svg></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Drzewo liściaste</h2><span class="badge ai">otagowana przez AI</span>
+    </div>
+
+    <label class="f">Tytuł</label>
+    <input value="Drzewo liściaste">
+    <label class="f">Opis</label>
+    <textarea>Pojedyncze drzewo liściaste z okrągłą, gęstą koroną w odcieniach zieleni i brązowym pniem. Styl płaski, bez konturu.</textarea>
+    <label class="f">Kategoria</label>
+    <select><option>Rośliny</option></select>
+    <label class="f">Tagi</label>
+    <div>
+      <span class="chip">drzewo <span class="x">×</span></span><span class="chip">lato <span class="x">×</span></span>
+      <span class="chip">zieleń <span class="x">×</span></span><span class="chip">płasko <span class="x">×</span></span>
+      <span class="chip">park <span class="x">×</span></span>
+    </div>
+    <input placeholder="Dodaj tag…" style="margin-top:4px">
+
+    <div class="kv">
+      <span>Kolory</span><span><i class="swatch" style="background:#4f8a3c"></i><i class="swatch" style="background:#5d9b48"></i><i class="swatch" style="background:#7a5233"></i></span>
+      <span>Wymiary</span><span>100 × 100 (viewBox)</span>
+      <span>Źródło</span><span>tree-summer.svg</span>
+      <span>Dodano</span><span>2026-10-12</span>
+      <span>Użyta w</span><span><a href="editor.html">Wieś latem</a>, Park miejski</span>
+    </div>
+
+    <div class="actions">
+      <button class="primary">Oznacz jako sprawdzoną</button>
+      <button>Zapisz</button>
+      <button>Pobierz SVG</button>
+      <button>Pokaż oryginał</button>
+      <button style="color:var(--accent)">Usuń</button>
+    </div>
+  </aside>
+</div>
+</body>
+</html>
