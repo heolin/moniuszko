@@ -1,0 +1,7 @@
+node_modules/
+dist/
+workspace/
+moniuszko.config.json
+test-results/
+playwright-report/
+*.tsbuildinfo

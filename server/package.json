@@ -1,0 +1,45 @@
+{
+  "name": "@moniuszko/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "moniuszko": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts --config ../moniuszko.config.json",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js --config ../moniuszko.config.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@moniuszko/shared": "*",
+    "@resvg/resvg-js": "^2.6.2",
+    "@xmldom/xmldom": "^0.9.12",
+    "better-sqlite3": "^13.0.3",
+    "dompurify": "^3.4.17",
+    "drizzle-orm": "^0.45.4",
+    "express": "^5.3.0",
+    "jsdom": "^26.1.0",
+    "multer": "^2.4.0",
+    "nanoid": "^6.0.2",
+    "svgo": "^4.1.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "^5.0.6",
+    "@types/jsdom": "^21.1.7",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^22.10.0",
+    "@types/supertest": "^7.2.1",
+    "drizzle-kit": "^0.31.11",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.4"
+  }
+}

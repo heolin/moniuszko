@@ -1,0 +1,6 @@
+{
+  "workspace": "./workspace",
+  "port": 4400,
+  "normalizeSvg": true,
+  "warnDuplicates": true
+}
