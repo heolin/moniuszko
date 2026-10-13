@@ -188,7 +188,11 @@ export function EditorPage() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (isField(e.target)) return;
-      if (useEditor.getState().editingTextId) return;
+      if (useEditor.getState().editingTextId) {
+        // Pole edycji tekstu bez fokusu: Escape zamyka je bez zapisu, inne klawisze są pomijane.
+        if (e.key === 'Escape') useEditor.getState().setEditingText(null);
+        return;
+      }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
         e.preventDefault();
         void saveNow();

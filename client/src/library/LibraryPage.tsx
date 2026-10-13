@@ -179,7 +179,7 @@ export function LibraryPage() {
                     <Text size="xs" c="dimmed" truncate>
                       {g.category ?? '—'}
                     </Text>
-                    <Badge size="xs" color={STATUS_COLOR[g.tagStatus]} variant="light">
+                    <Badge size="xs" color={STATUS_COLOR[g.tagStatus]} variant="light" style={{ flexShrink: 0 }}>
                       {g.tagStatus === 'ai' ? 'AI' : STATUS_LABEL[g.tagStatus]}
                     </Badge>
                   </Group>

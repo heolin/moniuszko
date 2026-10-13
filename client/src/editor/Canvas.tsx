@@ -193,13 +193,15 @@ export function Canvas() {
 
   const ids = () => useEditor.getState().selection;
 
+  // Moveable zgłasza początek przeciągania już przy wciśnięciu przycisku, także przy zwykłym
+  // kliknięciu i dwukliku. Gest (wstrzymanie historii) zaczyna się dopiero przy pierwszym ruchu.
   const dragStart = (e: { clientX: number; clientY: number; datas: Record<string, unknown> }) => {
-    useEditor.getState().beginGesture();
     e.datas.start = { x: e.clientX, y: e.clientY };
   };
   const drag = (e: { clientX: number; clientY: number; datas: Record<string, unknown>; inputEvent: { shiftKey?: boolean } | null }) => {
     const start = e.datas.start as { x: number; y: number } | undefined;
     if (!start) return;
+    if (!useEditor.getState().gesture) useEditor.getState().beginGesture();
     const z = useEditor.getState().zoom;
     let dx = (e.clientX - start.x) / z;
     let dy = (e.clientY - start.y) / z;

@@ -227,6 +227,8 @@ export const useEditor = create<EditorStore>()(
         set({ keepAspect: v });
       },
       setEditingText(id) {
+        // Pole edycji przejmuje wskaźnik, więc gest rozpoczęty kliknięciem nie dostałby końca.
+        if (id && get().gesture) get().endGesture();
         set({ editingTextId: id });
       },
       setHighlight(ids) {

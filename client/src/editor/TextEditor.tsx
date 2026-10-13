@@ -29,8 +29,13 @@ export function TextEditor({ nodeId, element, container }: Props) {
   }, [element, container, zoom, value]);
 
   useEffect(() => {
-    ref.current?.focus();
-    ref.current?.select();
+    // Po klatce: przy dwukliku przeglądarka kończy obsługę myszy i odbiera fokus polu
+    // ustawiony od razu.
+    const raf = requestAnimationFrame(() => {
+      ref.current?.focus();
+      ref.current?.select();
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   function finish(commit: boolean) {

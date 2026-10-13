@@ -208,6 +208,8 @@ body {
 }
 
 .mz-canvas-wrap {
+  /* Uchwyty Moveable mają wysoki z-index; bez własnego kontekstu warstw rysują się nad oknami modalnymi. */
+  isolation: isolate;
   flex: 1;
   background: var(--mz-canvas);
   position: relative;

@@ -249,15 +249,15 @@ export function CompositionsPage() {
                       {timeAgo(c.updatedAt)}
                     </Text>
                     {c.author === 'agent' && c.status === 'draft' ? (
-                      <Badge size="xs" color="violet" variant="light">
+                      <Badge size="xs" color="violet" variant="light" style={{ flexShrink: 0 }}>
                         szkic agenta
                       </Badge>
                     ) : c.author === 'agent' ? (
-                      <Badge size="xs" color="green" variant="light">
+                      <Badge size="xs" color="green" variant="light" style={{ flexShrink: 0 }}>
                         agent, przejrzana
                       </Badge>
                     ) : (
-                      <Badge size="xs" color="green" variant="light">
+                      <Badge size="xs" color="green" variant="light" style={{ flexShrink: 0 }}>
                         moja
                       </Badge>
                     )}
