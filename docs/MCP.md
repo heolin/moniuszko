@@ -41,6 +41,19 @@ polecenie są też na ekranie Ustawienia.
 | `create_composition` | nowa kompozycja z warstwami Tło, Obiekty, Teksty i statusem „szkic” |
 | `apply_scene_ops` | lista operacji na kompozycji, wykonywana w całości albo wcale; zwraca strukturę i render PNG |
 
+## Prompty
+
+| Prompt | Działanie | Argumenty |
+|---|---|---|
+| `tag_untagged` | opisuje grafiki bez metadanych według stałych zasad: istniejące kategorie i tagi, tytuł 1–4 słowa, opis w 1–2 zdaniach, 2–6 tagów; praca do wyczerpania listy | `limit` (najwyżej tyle grafik), `uwagi` (dodatkowe wskazówki) |
+
+Claude Code pokazuje prompty serwera MCP jako polecenia z ukośnikiem:
+
+```
+/mcp__moniuszko__tag_untagged
+/mcp__moniuszko__tag_untagged 20 "tagi po angielsku"
+```
+
 ## Operacje sceny
 
 `apply_scene_ops` przyjmuje `compositionId` i `ops`. Współrzędne to piksele płótna,
@@ -90,6 +103,9 @@ Render, który agent dostaje w odpowiedzi:
 ## Przykładowe polecenia dla agenta
 
 ### Tagowanie biblioteki
+
+Najprościej poleceniem `/mcp__moniuszko__tag_untagged` (zob. [Prompty](#prompty)). To samo
+działa zwykłym zdaniem:
 
 > Otaguj grafiki bez metadanych w bibliotece Moniuszko. Najpierw sprawdź istniejące
 > kategorie i tagi, żeby używać tych samych. Dla każdej grafiki podaj krótki tytuł, jedno

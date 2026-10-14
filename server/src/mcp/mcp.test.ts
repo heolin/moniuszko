@@ -143,6 +143,26 @@ describe('MCP', () => {
   });
 });
 
+describe('prompt tag_untagged', () => {
+  it('jest na liście i podaje liczbę grafik bez opisu, limit i uwagi', async () => {
+    t.ctx.library.importFile('drzewo.svg', sample('drzewo.svg'));
+    t.ctx.library.importFile('dom.svg', sample('dom.svg'));
+    const { prompts } = await client.listPrompts();
+    expect(prompts.map((p) => p.name)).toEqual(['tag_untagged']);
+    const r = await client.getPrompt({ name: 'tag_untagged', arguments: { limit: '1', uwagi: 'tagi po angielsku' } });
+    const msg = r.messages[0]!.content;
+    expect(msg.type).toBe('text');
+    const text = (msg as { text: string }).text;
+    expect(text).toContain('jest 2 grafik bez metadanych');
+    expect(text).toContain('najwyżej 1 z nich');
+    expect(text).toContain('Dodatkowe wskazówki: tagi po angielsku');
+  });
+
+  it('odrzuca limit, który nie jest liczbą', async () => {
+    await expect(client.getPrompt({ name: 'tag_untagged', arguments: { limit: 'dużo' } })).rejects.toThrow(/limit/);
+  });
+});
+
 describe('MCP przez HTTP', () => {
   it('odpowiada na initialize pod /mcp', async () => {
     const app = createApp(t.ctx);

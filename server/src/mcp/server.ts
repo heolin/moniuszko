@@ -193,6 +193,42 @@ export function createMcpServer(ctx: AppContext): McpServer {
     safe(() => ({ content: [json(ctx.library.repo.facets())] })),
   );
 
+  // ------------------------------------------------------------ prompty
+
+  // Argumenty promptów MCP są zawsze tekstem; limit jest parsowany z napisu.
+  server.registerPrompt(
+    'tag_untagged',
+    {
+      title: 'Otaguj grafiki bez opisu',
+      description: 'Opisuje wszystkie grafiki ze statusem „bez metadanych”: tytuł, opis, kategoria, tagi.',
+      argsSchema: {
+        limit: z.string().regex(/^\d+$/, 'limit musi być liczbą całkowitą').optional().describe('Najwyżej tyle grafik; domyślnie wszystkie'),
+        uwagi: z.string().optional().describe('Dodatkowe wskazówki, np. „tagi po angielsku”'),
+      },
+    },
+    ({ limit, uwagi }) => {
+      const total = ctx.library.repo.facets().tagStatus.untagged;
+      const scope = limit ? `najwyżej ${Number(limit)} z nich` : 'wszystkie';
+      const text = `W bibliotece Moniuszko jest ${total} grafik bez metadanych. Opisz ${scope}.
+
+Kolejność pracy:
+1. Wywołaj get_library_overview i zapamiętaj istniejące kategorie i tagi. Używaj ich; nową
+   kategorię lub tag dodawaj tylko wtedy, gdy żadna istniejąca nie pasuje.
+2. Wywołuj list_untagged (limit 10) i obejrzyj podglądy. Każda grafika dostaje jedno
+   wywołanie update_graphic_metadata z polami:
+   - title: 1–4 słowa, rzeczownik z określeniem, np. „Drzewo liściaste”,
+   - description: jedno lub dwa zdania: co przedstawia grafika, styl, dominujące kolory,
+   - category: jedna kategoria,
+   - tags: 2–6 tagów, małymi literami, w liczbie pojedynczej.
+3. Powtarzaj krok 2, aż list_untagged zwróci total równe 0${limit ? ' albo opiszesz limit' : ''}.
+4. Na końcu podaj, ile grafik opisano i jakie nowe kategorie lub tagi powstały.
+
+Opisuj tylko to, co widać na podglądzie. Jeśli grafika jest nieczytelna, nadaj jej tag
+„do-sprawdzenia” i opisz to, co da się rozpoznać.${uwagi ? `\n\nDodatkowe wskazówki: ${uwagi}` : ''}`;
+      return { messages: [{ role: 'user', content: { type: 'text', text } }] };
+    },
+  );
+
   // ------------------------------------------------------------ kompozycje
 
   server.registerTool(
