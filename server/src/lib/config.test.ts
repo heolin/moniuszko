@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { loadConfig, saveConfig } from './config.js';
+import { loadConfig, rejectLegacyFile, saveConfig } from './config.js';
 
 function tmpConfig(): string {
-  return path.join(fs.mkdtempSync(path.join(os.tmpdir(), 're-cfg-')), 'revealeditor.config.json');
+  return path.join(fs.mkdtempSync(path.join(os.tmpdir(), 're-cfg-')), 'moniuszko.config.json');
 }
 
 describe('server config', () => {
@@ -30,5 +30,14 @@ describe('server config', () => {
     const p = tmpConfig();
     fs.writeFileSync(p, '{ not valid json');
     expect(loadConfig(p)).toEqual({});
+  });
+
+  it('rejects a file still under its pre-rename name', () => {
+    const dir = path.dirname(tmpConfig());
+    expect(() => rejectLegacyFile(dir, 'revealeditor.config.json', 'moniuszko.config.json')).not.toThrow();
+    fs.writeFileSync(path.join(dir, 'revealeditor.config.json'), '{}');
+    expect(() => rejectLegacyFile(dir, 'revealeditor.config.json', 'moniuszko.config.json')).toThrow(
+      /rename it to moniuszko\.config\.json/,
+    );
   });
 });

@@ -71,7 +71,7 @@ export function App() {
     return () => document.removeEventListener('mousedown', onMouseDown);
   }, []);
 
-  // Toolbar layout overrides from .revealeditor.json (docs/TOOLBARS.md P4).
+  // Toolbar layout overrides from .moniuszko.json (docs/TOOLBARS.md P4).
   useEffect(() => {
     api
       .editorConfig()

@@ -145,7 +145,7 @@ between the two.
 
 ## 11. Save
 
-Hit **Save** (Ctrl/Cmd+S). RevealEditor writes clean HTML back to the same file
+Hit **Save** (Ctrl/Cmd+S). Moniuszko writes clean HTML back to the same file
 — slides you didn't touch stay byte-for-byte identical, so your version history
 only shows what actually changed.
 

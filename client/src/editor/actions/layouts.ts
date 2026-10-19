@@ -1,6 +1,6 @@
 /**
  * Surface layouts — arrays of action ids, inner arrays are groups rendered
- * with separators. Defaults live here; a `.revealeditor.json` in the
+ * with separators. Defaults live here; a `.moniuszko.json` in the
  * workspace root may override any surface (docs/TOOLBARS.md P4):
  *
  *   { "toolbars": { "top": [["history.undo"], …], "floating": […],
@@ -112,7 +112,7 @@ export function getLayout(surface: SurfaceId): SurfaceLayout {
   return current[surface];
 }
 
-/** Merge overrides from .revealeditor.json; invalid shapes are ignored. */
+/** Merge overrides from .moniuszko.json; invalid shapes are ignored. */
 export function applyLayoutOverrides(overrides: unknown): void {
   if (!overrides || typeof overrides !== 'object') return;
   const toolbars = (overrides as { toolbars?: unknown }).toolbars;

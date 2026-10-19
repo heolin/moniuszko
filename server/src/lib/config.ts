@@ -16,12 +16,24 @@ export interface ServerConfig {
   allowWorkspaceChange?: boolean;
 }
 
-/** Default config location: <repo-root>/revealeditor.config.json. This file
+/** Throw if `dir` still holds a file under the name it had before the project
+ *  was renamed from RevealEditor to Moniuszko, so an old config is reported
+ *  instead of being ignored. */
+export function rejectLegacyFile(dir: string, legacyName: string, currentName: string): void {
+  const legacy = path.join(dir, legacyName);
+  if (fs.existsSync(legacy)) {
+    throw new Error(`${legacy} uses the old file name; rename it to ${currentName}.`);
+  }
+}
+
+/** Default config location: <repo-root>/moniuszko.config.json. This file
  *  sits at server/{src,dist}/lib/config.*, so the repo root is three levels up —
  *  the same in tsx dev (src/lib) and the built server (dist/lib). */
 export function defaultConfigPath(): string {
   const here = path.dirname(fileURLToPath(import.meta.url));
-  return path.resolve(here, '../../..', 'revealeditor.config.json');
+  const root = path.resolve(here, '../../..');
+  rejectLegacyFile(root, 'revealeditor.config.json', 'moniuszko.config.json');
+  return path.join(root, 'moniuszko.config.json');
 }
 
 export function loadConfig(configPath: string): ServerConfig {

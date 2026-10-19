@@ -1,15 +1,20 @@
-# RevealEditor
+<img src="docs/images/logo.svg" alt="" width="96" height="96">
+
+# Moniuszko
 
 A WYSIWYG editor for [reveal.js](https://revealjs.com/) presentations. The reveal.js HTML
 file on disk is the only source of truth — open existing hand-written decks, edit them
 visually, save back clean HTML. No lock-in, git-friendly diffs, decks stay standalone.
 
-📖 **[Browse the documentation & landing page →](https://heolin.github.io/RevealEditor/)**
-&nbsp;·&nbsp; [User guide](https://heolin.github.io/RevealEditor/usage.html)
-&nbsp;·&nbsp; [Feature catalog](https://heolin.github.io/RevealEditor/features.html)
-&nbsp;·&nbsp; [Architecture](https://heolin.github.io/RevealEditor/architecture.html)
+The project is named after Stanisław Moniuszko, a Polish composer; the program is for
+composing presentations.
 
-![Editing a slide in RevealEditor — sorter, canvas, toolbar and inspector](docs/images/editor-overview.png)
+📖 **[Browse the documentation & landing page →](https://heolin.github.io/moniuszko/)**
+&nbsp;·&nbsp; [User guide](https://heolin.github.io/moniuszko/usage.html)
+&nbsp;·&nbsp; [Feature catalog](https://heolin.github.io/moniuszko/features.html)
+&nbsp;·&nbsp; [Architecture](https://heolin.github.io/moniuszko/architecture.html)
+
+![Editing a slide in Moniuszko — sorter, canvas, toolbar and inspector](docs/images/editor-overview.png)
 
 *Edit slides visually at full theme fidelity — the slide sorter on the left, the design
 canvas in the middle, and a context inspector on the right.*
@@ -96,8 +101,8 @@ node server/dist/index.js ~/path/to/your/talks --port 4321
 Any `.html` file containing a reveal.js `div.slides` is picked up automatically.
 
 You can also switch folders from the deck list at runtime — off by default;
-enable with `--allow-workspace-change`, or copy `revealeditor.config.example.json`
-to `revealeditor.config.json` and set `"allowWorkspaceChange": true`. Keep it
+enable with `--allow-workspace-change`, or copy `moniuszko.config.example.json`
+to `moniuszko.config.json` and set `"allowWorkspaceChange": true`. Keep it
 **off** when hosting. See
 [Choosing a workspace folder](docs/USAGE.md#choosing-a-workspace-folder).
 
@@ -114,7 +119,7 @@ New here? The [user guide](docs/USAGE.md) walks through editing a deck end to en
   [docs/ROADMAP.md](docs/ROADMAP.md)
 
 These also render as a browsable site (landing page + docs) published to GitHub Pages at
-**[heolin.github.io/RevealEditor](https://heolin.github.io/RevealEditor/)** by
+**[heolin.github.io/moniuszko](https://heolin.github.io/moniuszko/)** by
 `.github/workflows/pages.yml`. Build it locally with `npm run build:site` and open
 `_site/index.html`.
 

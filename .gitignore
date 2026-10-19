@@ -9,4 +9,6 @@ test-results/
 playwright-report/
 _site/
 .screenshots-workspace/
+moniuszko.config.json
+# Pre-rename name; still ignored so a leftover local copy is not committed.
 revealeditor.config.json

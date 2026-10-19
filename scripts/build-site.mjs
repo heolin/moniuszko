@@ -1,4 +1,4 @@
-// Build the RevealEditor project site (GitHub Pages): a hand-authored landing
+// Build the Moniuszko project site (GitHub Pages): a hand-authored landing
 // page plus one styled HTML page per Markdown doc, rendered with `marked`.
 // Output goes to `_site/`, which the Pages workflow uploads. Run locally with
 // `npm run build:site` and open `_site/index.html` to preview.
@@ -25,7 +25,7 @@ const DEV_PAGES = [
   { src: 'docs/ROADMAP.md', out: 'roadmap.html', label: 'Roadmap' },
 ];
 
-const REPO_URL = 'https://github.com/heolin/RevealEditor';
+const REPO_URL = 'https://github.com/heolin/moniuszko';
 
 const NAV = [{ out: 'index.html', label: 'Home' }, ...PAGES];
 
@@ -65,7 +65,8 @@ a:hover { text-decoration: underline; }
   padding: 12px 24px; background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
 }
-.topbar .brand { font-weight: 700; letter-spacing: -0.01em; }
+.topbar .brand { font-weight: 700; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 8px; }
+.topbar .brand img { width: 24px; height: 24px; }
 .topbar nav { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; }
 .topbar nav a.active { color: var(--fg); font-weight: 600; }
 .topbar .spacer { flex: 1; }
@@ -87,6 +88,7 @@ a:hover { text-decoration: underline; }
 .footer-dev { margin-top: 8px; font-size: 0.85rem; }
 /* Landing */
 .hero { text-align: center; padding: 72px 24px 40px; }
+.hero .logo { width: 96px; height: 96px; margin-bottom: 16px; }
 .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 0 0 0.2em; letter-spacing: -0.03em; }
 .hero .tag { font-size: 1.25rem; color: var(--muted); max-width: 640px; margin: 0 auto 1.6em; }
 .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -107,7 +109,7 @@ function topbar(currentOut) {
     (p) => `<a href="${p.out}"${p.out === currentOut ? ' class="active"' : ''}>${p.label}</a>`,
   ).join('');
   return `<header class="topbar">
-  <a class="brand" href="index.html">RevealEditor</a>
+  <a class="brand" href="index.html"><img src="images/logo.svg" alt="">Moniuszko</a>
   <nav>${links}</nav>
   <span class="spacer"></span>
   <a href="${REPO_URL}">GitHub ↗</a>
@@ -121,13 +123,14 @@ function page({ title, currentOut, body }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
+<link rel="icon" href="images/logo.svg" type="image/svg+xml">
 <style>${CSS}</style>
 </head>
 <body>
 ${topbar(currentOut)}
 ${body}
 <div class="footer">
-  <div>RevealEditor — a WYSIWYG editor for reveal.js. <a href="${REPO_URL}">Source on GitHub</a>.</div>
+  <div>Moniuszko — a WYSIWYG editor for reveal.js. <a href="${REPO_URL}">Source on GitHub</a>.</div>
   <div class="footer-dev">For developers: ${DEV_PAGES.map((p) => `<a href="${p.out}">${p.label}</a>`).join(' · ')}</div>
 </div>
 </body>
@@ -171,7 +174,8 @@ const FEATURES = [
 function landing() {
   const cards = FEATURES.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('');
   const body = `<section class="hero">
-  <h1>RevealEditor</h1>
+  <img class="logo" src="images/logo.svg" alt="">
+  <h1>Moniuszko</h1>
   <p class="tag">A WYSIWYG editor for <a href="https://revealjs.com/">reveal.js</a> presentations. The HTML file on disk is the only source of truth — edit visually, save back clean, standalone HTML.</p>
   <div class="cta">
     <a class="btn primary" href="usage.html">Get started</a>
@@ -179,9 +183,9 @@ function landing() {
     <a class="btn" href="${REPO_URL}">GitHub</a>
   </div>
 </section>
-<div class="shot"><img src="images/editor-overview.png" alt="Editing a slide in RevealEditor — sorter, canvas, toolbar and inspector"></div>
+<div class="shot"><img src="images/editor-overview.png" alt="Editing a slide in Moniuszko — sorter, canvas, toolbar and inspector"></div>
 <div class="wrap">
-  <h2 class="section-title">Why RevealEditor</h2>
+  <h2 class="section-title">Why Moniuszko</h2>
   <div class="grid">${cards}</div>
   <h2 class="section-title">Quick start</h2>
   <pre><code>npm install
@@ -196,7 +200,7 @@ node server/dist/index.js ~/path/to/your/talks --port 4321</code></pre>
     <a href="architecture.html">architecture</a> doc.
   </p>
 </div>`;
-  return page({ title: 'RevealEditor — WYSIWYG editor for reveal.js', currentOut: 'index.html', body });
+  return page({ title: 'Moniuszko — WYSIWYG editor for reveal.js', currentOut: 'index.html', body });
 }
 
 // ---- build ----
@@ -215,7 +219,7 @@ for (const p of [...PAGES, ...DEV_PAGES]) {
     continue;
   }
   const md = fs.readFileSync(abs, 'utf8');
-  const title = `${p.label} — RevealEditor`;
+  const title = `${p.label} — Moniuszko`;
   const body = `<div class="wrap doc">${renderDoc(md)}</div>`;
   fs.writeFileSync(path.join(OUT, p.out), page({ title, currentOut: p.out, body }));
   built++;

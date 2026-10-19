@@ -96,7 +96,10 @@ export function DeckList() {
     <Container size="xl" py={40}>
       <Group justify="space-between" mb="lg" align="flex-start">
         <div style={{ minWidth: 0 }}>
-          <Title order={2}>RevealEditor</Title>
+          <Group gap="sm" wrap="nowrap">
+            <img src="/favicon.svg" alt="" width={32} height={32} />
+            <Title order={2}>Moniuszko</Title>
+          </Group>
           {workspace && (
             <Group gap="xs" mt={4} wrap="nowrap">
               <Text size="xs" c="dimmed" title={workspace.path} style={{ fontFamily: 'monospace' }} truncate>

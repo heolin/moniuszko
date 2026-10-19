@@ -1,6 +1,6 @@
 # Diagramming plan — shapes, connectors, nodes
 
-Goal: make RevealEditor a usable diagramming tool (boxes, labeled nodes,
+Goal: make Moniuszko a usable diagramming tool (boxes, labeled nodes,
 connectors that snap to them) without breaking the two shape invariants:
 the `data-re-shape` JSON is the editable truth and the baked SVG must render
 identically everywhere reveal.js runs. Everything below fits the existing

@@ -1,4 +1,4 @@
-# RevealEditor — Feature Catalog
+# Moniuszko — Feature Catalog
 
 The complete feature inventory for the product, written down before implementation so the
 architecture can be designed for all of it — even features we build later.
@@ -10,7 +10,7 @@ Execution plans for everything still open live in [ROADMAP.md](ROADMAP.md).
    hand-written decks, edits them visually, saves back clean HTML. No proprietary format,
    no lock-in (the reason we left slides.com).
 2. **Decks stay standalone.** A saved deck must open and present correctly with zero
-   dependency on RevealEditor — from any static host, offline, forever. No feature may
+   dependency on Moniuszko — from any static host, offline, forever. No feature may
    require our runtime inside the deck.
 3. **Git-friendly.** Saves are deterministic; untouched slides are emitted byte-identical;
    diffs show only what changed.
@@ -289,7 +289,7 @@ format.
 | Element clipboard: copy/cut/paste elements within & across slides | T1 | Duplicate = Ctrl+D / Alt-drag |
 | Keyboard shortcuts (save, undo, delete, nudge, duplicate, navigation) | T1 | |
 | Context menus (right-click on element / slide / sorter) | T2 | Canvas menu shipped; sorter menu open (ROADMAP §6) |
-| Configurable toolbar/command system (top panel + floating + context + keyboard from one action registry) | T2 | Shipped — action registry + `.revealeditor.json` overrides ([TOOLBARS.md](TOOLBARS.md)) |
+| Configurable toolbar/command system (top panel + floating + context + keyboard from one action registry) | T2 | Shipped — action registry + `.moniuszko.json` overrides ([TOOLBARS.md](TOOLBARS.md)) |
 | Raw HTML view/edit of current slide (escape hatch, CodeMirror) | T2 | Power-user trust feature: see & edit exactly what will be saved |
 | Multi-select (shift-click, marquee) | T2 | Shipped — both |
 | Accessibility of the editor itself (keyboard operability, focus management) | T2 | |

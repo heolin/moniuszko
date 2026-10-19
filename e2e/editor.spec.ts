@@ -18,7 +18,7 @@ function previewFrame(page: Page): Frame {
 
 async function openDemo(page: Page): Promise<void> {
   await page.goto('/');
-  await page.getByText('RevealEditor demo deck').click();
+  await page.getByText('Moniuszko demo deck').click();
   await page.waitForSelector('.sorter-slide');
   await page.waitForTimeout(1200); // initial preview sync
 }

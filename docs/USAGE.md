@@ -1,13 +1,13 @@
-# RevealEditor — User Guide
+# Moniuszko — User Guide
 
-A task-oriented guide to editing presentations with RevealEditor. It assumes
+A task-oriented guide to editing presentations with Moniuszko. It assumes
 you have the app running (see [Getting started](#getting-started)); for what
 the product can do at a glance, see the [feature catalog](FEATURES.md).
 
-RevealEditor edits ordinary [reveal.js](https://revealjs.com/) decks. The HTML
+Moniuszko edits ordinary [reveal.js](https://revealjs.com/) decks. The HTML
 file on disk is the only source of truth: you open a hand-written deck, edit it
 visually, and save clean, standalone HTML back. Nothing you make depends on
-RevealEditor to present.
+Moniuszko to present.
 
 ## Getting started
 
@@ -29,7 +29,7 @@ Any `.html` file containing a reveal.js `div.slides` is detected automatically.
 
 ## Choosing a workspace folder
 
-The **workspace** is the folder RevealEditor scans and edits. It's chosen when
+The **workspace** is the folder Moniuszko scans and edits. It's chosen when
 the server starts, in this order of precedence:
 
 1. A folder passed on the command line — `node server/dist/index.js ~/talks`.
@@ -47,21 +47,21 @@ server to *any* directory on the machine, it is **off by default**. Enable it:
 
 When it's off, the button is hidden and the switch API refuses (`403`).
 
-> **Hosting note.** If you expose RevealEditor beyond your own machine, leave
+> **Hosting note.** If you expose Moniuszko beyond your own machine, leave
 > workspace switching **off**. The editor has no authentication, so an enabled
 > switch lets anyone re-root it to browse the server's filesystem.
 
 ### The server config file
 
-Settings live in **`revealeditor.config.json`** in the project directory (not
+Settings live in **`moniuszko.config.json`** in the project directory (not
 your home folder), so configuration travels with the deployment. Point at a
 different file with `--config <path>`.
 
-The repo ships **`revealeditor.config.example.json`** as a template. Copy it and
+The repo ships **`moniuszko.config.example.json`** as a template. Copy it and
 edit:
 
 ```bash
-cp revealeditor.config.example.json revealeditor.config.json
+cp moniuszko.config.example.json moniuszko.config.json
 ```
 
 ```json
@@ -71,10 +71,14 @@ cp revealeditor.config.example.json revealeditor.config.json
 }
 ```
 
-`revealeditor.config.json` itself is git-ignored (it ends up holding local
+`moniuszko.config.json` itself is git-ignored (it ends up holding local
 paths), so your copy stays out of version control. Switching folders in the app
 updates `workspace` here, so the next start (without a command-line folder)
 resumes where you left off.
+
+Before the project was renamed, this file was called `revealeditor.config.json`.
+If a file with the old name is still in the project directory, the server
+refuses to start and asks you to rename it.
 
 ## The deck list
 

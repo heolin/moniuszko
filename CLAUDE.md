@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A WYSIWYG editor for reveal.js presentations. The reveal.js HTML file on disk is the **only source of truth** — the editor opens existing hand-written decks, edits them visually, and saves back clean HTML. No lock-in: untouched slides must save byte-identical, and markup the editor doesn't understand is never rewritten.
+Moniuszko (formerly RevealEditor) is a WYSIWYG editor for reveal.js presentations. The reveal.js HTML file on disk is the **only source of truth** — the editor opens existing hand-written decks, edits them visually, and saves back clean HTML. No lock-in: untouched slides must save byte-identical, and markup the editor doesn't understand is never rewritten.
 
 `docs/ARCHITECTURE.md` is the authoritative design document (principles, extension points, feature→mechanism mapping) — read it before structural changes. `docs/FEATURES.md` is the feature catalog with tiers; `docs/ROADMAP.md` plans all still-open items (mechanism sketches per feature); `docs/TOOLBARS.md` covers the action-registry design. Note the directory sketch in ARCHITECTURE §10 is slightly aspirational — see actual layout below.
 

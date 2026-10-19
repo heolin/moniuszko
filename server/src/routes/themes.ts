@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { Workspace } from '../lib/workspace.js';
 import { listDesignSystems } from '../lib/designSystem.js';
+import { rejectLegacyFile } from '../lib/config.js';
 
 export function designSystemsRouter(ws: Workspace): Router {
   const router = Router();
@@ -14,11 +15,18 @@ export function designSystemsRouter(ws: Workspace): Router {
     }
   });
 
-  // Editor configuration (.revealeditor.json in the workspace root):
+  // Editor configuration (.moniuszko.json in the workspace root):
   // toolbar layout overrides etc. Missing/invalid file → {}.
-  router.get('/editor-config', async (_req, res) => {
+  router.get('/editor-config', async (_req, res, next) => {
     try {
-      const raw = await fs.readFile(path.join(ws.root, '.revealeditor.json'), 'utf8');
+      rejectLegacyFile(ws.root, '.revealeditor.json', '.moniuszko.json');
+    } catch (err) {
+      console.error(String(err));
+      next(err);
+      return;
+    }
+    try {
+      const raw = await fs.readFile(path.join(ws.root, '.moniuszko.json'), 'utf8');
       res.json(JSON.parse(raw));
     } catch {
       res.json({});

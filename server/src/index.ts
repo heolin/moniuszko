@@ -52,7 +52,7 @@ const switchSource = allowFlag
 
 const app = createApp(workspace, { allowWorkspaceChange, configPath });
 app.listen(port, () => {
-  console.log('revealeditor');
+  console.log('moniuszko');
   console.log(`  config:     ${configPath} ${configExists ? '(loaded)' : '(not found — using defaults)'}`);
   console.log(`  workspace:  ${workspace} (from ${workspaceSource})`);
   console.log(

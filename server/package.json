@@ -1,9 +1,9 @@
 {
-  "name": "revealeditor-server",
+  "name": "moniuszko-server",
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "revealeditor": "dist/index.js"
+    "moniuszko": "dist/index.js"
   },
   "scripts": {
     "dev": "tsx watch src/index.ts --default-workspace ../demo-workspace --port 4321",

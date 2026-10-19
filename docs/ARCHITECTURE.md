@@ -1,4 +1,4 @@
-# RevealEditor — Architecture
+# Moniuszko — Architecture
 
 Designed against the full feature catalog in [FEATURES.md](./FEATURES.md), including features
 we will build later. The test of this document: every T1/T2 feature maps onto the extension
@@ -89,7 +89,7 @@ Some features need deck-level CSS the user didn't hand-write: table style preset
 token overrides, shape/animation presets. These live in exactly one clearly-marked block:
 
 ```html
-<style data-revealeditor="managed">/* re:managed — edited by RevealEditor, safe to edit or delete */
+<style data-revealeditor="managed">/* re:managed — edited by Moniuszko, safe to edit or delete */
 .re-table--striped tbody tr:nth-child(odd) { background: rgba(128,128,128,.12); }
 :root { --r-heading-color: #e7ad52; }
 </style>
@@ -295,7 +295,7 @@ Workspace-relative `?path=`, resolution confined to workspace root, atomic write
 `deckFile.ts` (parse5 locate + splice + head-insertion point) is the fidelity core and gets
 byte-identity fixtures from day one. npm-workspaces monorepo (`server/`, `client/`), dev =
 `concurrently` tsx-watch (:4321) + Vite (:5173, proxied), prod = built client served by
-server, `npx revealeditor <folder>`.
+server, `npx moniuszko <folder>`.
 
 Directory layout follows the approved base plan, with the editor engine reorganized around
 the registry:

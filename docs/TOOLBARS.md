@@ -124,7 +124,7 @@ only empty/weight-style-only spans (execCommand leftovers) are unwrapped.
   relaxation for intentional styled spans; handler-contributed actions (table
   row/col quick ops, chart edit) appear in the menu.
 - **P4 (later) — configuration file.** No customization UI. Layout overrides
-  come from an editor config file (`.revealeditor.json` in the workspace root,
+  come from an editor config file (`.moniuszko.json` in the workspace root,
   served via the API): `{ "toolbars": { "top": [...], "floating": [...],
   "context": [...] } }` — arrays of action ids, unknown ids ignored with a
   console warning. Defaults live in code (`editor/actions/layouts.ts`).

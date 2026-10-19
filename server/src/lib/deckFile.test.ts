@@ -42,7 +42,7 @@ describe('parseDeck', () => {
   it('extracts theme, title, stylesheets, config', () => {
     const info = parseDeck(fixture('demo.html'));
     expect(info.theme).toBe('black');
-    expect(info.title).toBe('RevealEditor demo deck');
+    expect(info.title).toBe('Moniuszko demo deck');
     expect(info.stylesheets).toHaveLength(3);
     expect(info.config).toEqual({ width: 960, height: 700, center: true, margin: 0.04, slideNumber: false });
   });

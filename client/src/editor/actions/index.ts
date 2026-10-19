@@ -22,7 +22,7 @@ export function getAction(id: string): Action | null {
   const action = BY_ID.get(id) ?? null;
   if (!action && !warned.has(id)) {
     warned.add(id);
-    console.warn(`[revealeditor] unknown action id in layout: ${id}`);
+    console.warn(`[moniuszko] unknown action id in layout: ${id}`);
   }
   return action;
 }
